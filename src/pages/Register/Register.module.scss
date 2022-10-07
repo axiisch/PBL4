@@ -73,3 +73,21 @@
         background-position: right center;
     }
 }
+
+.upload {
+    display: none;
+}
+
+.upload-icon {
+    font-size: 2.5rem;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-wrapper {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+}

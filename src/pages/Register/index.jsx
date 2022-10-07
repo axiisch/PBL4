@@ -1,6 +1,9 @@
 import styles from './Register.module.scss';
 import classNames from 'classnames/bind';
 
+import { faImage, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 const cx = classNames.bind(styles);
 
 function Register() {
@@ -21,7 +24,16 @@ function Register() {
                         <label className={cx('label')}>Email</label>
                         <input className={cx('input')} type="email" placeholder="Type in your Email"></input>
                     </div>
-                    {/* UPLOAD AVATAR */}
+
+                    <div className={cx('upload-wrapper')}>
+                        <input className={cx('upload')} type="file" id="file" />
+                        <label className={cx('upload-icon')} htmlFor="file">
+                            <FontAwesomeIcon icon={faImage} />
+                        </label>
+                        <label htmlFor="file" className={cx('label')}>
+                            Upload your avatar
+                        </label>
+                    </div>
                     <button className={cx('button')}>REGISTER</button>
                     <label className={cx('label-bottom')}>
                         Already a User? Try

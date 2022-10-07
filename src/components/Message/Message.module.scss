@@ -1,0 +1,56 @@
+.message {
+    display: flex;
+    margin-bottom: 10px;
+    &.self {
+        flex-direction: row-reverse;
+
+        .message-info {
+            img {
+                display: none;
+            }
+        }
+        .message-content {
+            display: flex;
+            flex-direction: column;
+            margin-right: 20px;
+            p,
+            img {
+                border-radius: 20px 0px 20px 20px;
+            }
+        }
+    }
+}
+
+.message-info {
+    display: flex;
+    flex-direction: column;
+
+    img {
+        margin-left: 19px;
+        margin-right: 19px;
+        width: 35px;
+        height: 35px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+}
+
+.message-content {
+    margin-bottom: 20px;
+    p {
+        word-wrap: break-word;
+        max-width: 230px;
+        align-items: center;
+        padding: 10px 20px;
+        border-radius: 0px 20px 20px 20px;
+        background-color: aqua;
+    }
+
+    img {
+        border-radius: 0px 20px 20px 20px;
+    }
+
+    p + img {
+        margin-top: 10px;
+    }
+}

@@ -10,10 +10,10 @@ function Input() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('upload')}>
-                <label className={cx('upload-icon')} htmlFor="attach">
+                <input className={cx('attach')} type="file" id="file" />
+                <label className={cx('upload-icon')} htmlFor="file">
                     <FontAwesomeIcon icon={faPaperclip} />
                 </label>
-                <input className={cx('attach')} type="file" />
             </div>
             <input className={cx('input')} type="text" placeholder="Type a Message Here" />
 
