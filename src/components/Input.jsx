@@ -12,7 +12,7 @@ function Input() {
                     />
                 </label>
                 <input
-                    className="shadow-[inset_0_0_30px_rgba(0,0,0,0.2)] mx-6 w-full h-9 rounded-3xl px-4 py-2  focus: outline-none"
+                    className=" mx-6 w-full h-9 border-b-2 border-gray-400  py-2  focus: outline-none focus:border-gray-600"
                     type="text"
                     placeholder="Message"
                 />
