@@ -2,20 +2,37 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
+import { useNavigate, Link } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+
 function Login() {
     const [visible, setVisibility] = useState(false);
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const email = e.target[0].value;
+        const password = e.target[1].value;
+
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            navigate('/');
+        } catch (err) {}
+    };
 
     return (
         <div className="bg-[url('./assets/img/bg1.jpg')] bg-cover w-screen h-screen flex items-center justify-center">
             <div className="w-96 bg-white shadow-2xl rounded-3xl">
-                <form className="px-14 py-8 flex items-center flex-col">
+                <form onSubmit={handleSubmit} className="px-14 py-8 flex items-center flex-col">
                     <label className="uppercase font-bold text-2xl mb-4">login</label>
                     <div className="mb-4 w-full">
-                        <label className="capitalize">username</label>
+                        <label className="capitalize">email</label>
                         <input
                             className="pr-2 w-full py-2 border-b-2 border-cyan-400  focus: outline-none focus:border-cyan-500"
-                            type="text"
-                            placeholder="Type in your username"
+                            type="email"
+                            placeholder="Type in your email"
                         ></input>
                         <span className="text-sm mt-1 block h-4 text-red-600">error</span>
                     </div>
@@ -43,7 +60,9 @@ function Login() {
                     </button>
 
                     <label className="capitalize text-sm">become a user</label>
-                    <span className="text-sm text-cyan-400 capitalize">register</span>
+                    <span className="text-sm text-cyan-400 capitalize">
+                        <Link to="/register">register</Link>
+                    </span>
                 </form>
             </div>
         </div>

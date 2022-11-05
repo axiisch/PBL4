@@ -1,14 +1,67 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faImage } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth, storage, db } from '../firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { doc, setDoc } from 'firebase/firestore';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Register() {
     const [visible, setVisibility] = useState(false);
+    const [error, setError] = useState(false);
+    const navigate = useNavigate();
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const displayName = e.target[0].value;
+        const password = e.target[1].value;
+        const email = e.target[2].value;
+        const file = e.target[3].files[0];
+
+        try {
+            // Create New User
+            const res = await createUserWithEmailAndPassword(auth, email, password);
+
+            // Unique Image Name
+            const date = new Date().getTime();
+            const storageRef = ref(storage, `${displayName + date}`);
+
+            await uploadBytesResumable(storageRef, file).then(() => {
+                getDownloadURL(storageRef).then(async (downloadURL) => {
+                    try {
+                        // Update Profile
+                        await updateProfile(res.user, {
+                            displayName,
+                            photoURL: downloadURL,
+                        });
+                        // Add to database
+                        await setDoc(doc(db, 'users', res.user.uid), {
+                            uid: res.user.uid,
+                            displayName,
+                            email,
+                            photoURL: downloadURL,
+                        });
+
+                        await setDoc(doc(db, 'userChats', res.user.uid), {
+                            // uid: res.user.uid,
+                            // displayName,
+                            // email,
+                            // photoURL: downloadURL,
+                        });
+                        // To Home Page
+                        navigate('/');
+                    } catch (err) {
+                        console.log(err);
+                    }
+                });
+            });
+        } catch (err) {}
+    };
     return (
         <div className="bg-[url('./assets/img/bg1.jpg')] bg-cover w-screen h-screen flex items-center justify-center">
             <div className="w-96 bg-white shadow-2xl rounded-3xl">
-                <form className="px-14 py-8 flex items-center flex-col">
+                <form onSubmit={handleSubmit} className="px-14 py-8 flex items-center flex-col">
                     <label className="uppercase font-bold text-2xl mb-4">register</label>
                     <div className="mb-4 w-full">
                         <label className="capitalize">username</label>
@@ -62,7 +115,9 @@ function Register() {
                     </button>
 
                     <label className="capitalize text-sm">already a user</label>
-                    <span className="text-sm text-cyan-400 capitalize">login</span>
+                    <span className="text-sm text-cyan-400 capitalize">
+                        <Link to="/login">login</Link>
+                    </span>
                 </form>
             </div>
         </div>

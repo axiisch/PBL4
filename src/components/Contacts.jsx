@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Contact from './Contact';
 
 function Contacts() {
