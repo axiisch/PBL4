@@ -1,3 +1,9 @@
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase';
+import { AuthContext } from '../context/AuthContext';
+
 function Contact() {
     return (
         <div className="cursor-pointer  px-6 py-3 flex items-center gap-3 hover:bg-gray-300">

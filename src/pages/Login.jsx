@@ -8,6 +8,7 @@ import { auth } from '../firebase';
 
 function Login() {
     const [visible, setVisibility] = useState(false);
+    const [error, setError] = useState(false);
 
     const navigate = useNavigate();
 
@@ -19,7 +20,9 @@ function Login() {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             navigate('/');
-        } catch (err) {}
+        } catch (err) {
+            setError(true);
+        }
     };
 
     return (
@@ -34,7 +37,7 @@ function Login() {
                             type="email"
                             placeholder="Type in your email"
                         ></input>
-                        <span className="text-sm mt-1 block h-4 text-red-600">error</span>
+                        {/* <span className="text-sm mt-1 block h-4 text-red-600">error</span> */}
                     </div>
 
                     <div className="w-full mb-4 ">
@@ -50,7 +53,7 @@ function Login() {
                             </span>
                         </div>
 
-                        <span className="text-sm mt-1 block h-4 text-red-600">error</span>
+                        {/* <span className="text-sm mt-1 block h-4 text-red-600">error</span> */}
                     </div>
 
                     <label className="text-cyan-400 text-sm capitalize w-full flex justify-end">forgot password</label>
@@ -63,6 +66,12 @@ function Login() {
                     <span className="text-sm text-cyan-400 capitalize">
                         <Link to="/register">register</Link>
                     </span>
+
+                    {error && (
+                        <span className="text-red-600 text-sm mt-4 text-center">
+                            Missing or Invalid Info. Please try again
+                        </span>
+                    )}
                 </form>
             </div>
         </div>

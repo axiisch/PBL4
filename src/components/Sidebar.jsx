@@ -1,5 +1,13 @@
+import Contacts from './Contacts';
+import Search from './Search';
+
 function Sidebar() {
-    return <div className="w-96 h-screen bg-slate-600">123</div>;
+    return (
+        <div className="bg-slate-700 flex flex-col">
+            <Search />
+            <Contacts />
+        </div>
+    );
 }
 
 export default Sidebar;

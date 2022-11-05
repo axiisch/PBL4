@@ -1,10 +1,10 @@
-import Contacts from '../components/Contacts';
 import Chat from '../components/Chat';
+import Sidebar from './Sidebar';
 
 function Content() {
     return (
         <div className="w-full bg-slate-700 flex">
-            <Contacts />
+            <Sidebar />
             <Chat />
         </div>
     );

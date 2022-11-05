@@ -35,7 +35,7 @@ function Register() {
                             displayName,
                             photoURL: downloadURL,
                         });
-                        // Add to database
+                        // Add to Database
                         await setDoc(doc(db, 'users', res.user.uid), {
                             uid: res.user.uid,
                             displayName,
@@ -52,11 +52,14 @@ function Register() {
                         // To Home Page
                         navigate('/');
                     } catch (err) {
+                        setError(true);
                         console.log(err);
                     }
                 });
             });
-        } catch (err) {}
+        } catch (err) {
+            setError(true);
+        }
     };
     return (
         <div className="bg-[url('./assets/img/bg1.jpg')] bg-cover w-screen h-screen flex items-center justify-center">
@@ -70,7 +73,7 @@ function Register() {
                             type="text"
                             placeholder="Type in your username"
                         ></input>
-                        <span className="text-sm mt-1 block h-4 text-red-600">error</span>
+                        {/* <span className="text-sm mt-1 block h-4 text-red-600">error</span> */}
                     </div>
 
                     <div className="w-full mb-4 ">
@@ -86,7 +89,7 @@ function Register() {
                             </span>
                         </div>
 
-                        <span className="text-sm mt-1 block h-4 text-red-600">error</span>
+                        {/* <span className="text-sm mt-1 block h-4 text-red-600">error</span> */}
                     </div>
 
                     <div className="mb-4 w-full">
@@ -96,7 +99,7 @@ function Register() {
                             type="text"
                             placeholder="Type in your email"
                         ></input>
-                        <span className="text-sm mt-1 block h-4 text-red-600">error</span>
+                        {/* <span className="text-sm mt-1 block h-4 text-red-600">error</span> */}
                     </div>
 
                     <div className="flex items-center justify-start w-full">
@@ -118,6 +121,11 @@ function Register() {
                     <span className="text-sm text-cyan-400 capitalize">
                         <Link to="/login">login</Link>
                     </span>
+                    {error && (
+                        <span className="text-red-600 text-sm mt-4 text-center">
+                            Missing or Invalid Info. Please try again
+                        </span>
+                    )}
                 </form>
             </div>
         </div>
