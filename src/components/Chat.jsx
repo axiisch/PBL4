@@ -2,8 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import Input from '../components/Input';
 import Chatbox from '../components/Chatbox';
+import { useContext } from 'react';
+import { ChatContext } from '../context/ChatContext';
 
 function Chat() {
+    const { data } = useContext(ChatContext);
+
     return (
         <div className="flex flex-col grow">
             {/* HEADER */}
@@ -12,10 +16,10 @@ function Chat() {
                     <div className="flex items-center gap-6">
                         <img
                             className="w-9 h-9 bg-cover rounded-full"
-                            src="https://i.pinimg.com/474x/e7/59/17/e75917f2f027002f522af4a9a3b7a88f.jpg"
+                            src={data.user?.photoURL}
                             alt="Profile Picture"
                         />
-                        <label>username</label>
+                        <label>{data.user?.displayName}</label>
                     </div>
                     <button className="btn-icon">
                         <FontAwesomeIcon

@@ -8,6 +8,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate, Link } from 'react-router-dom';
 
 function Register() {
+    // Toggle password visibility
     const [visible, setVisibility] = useState(false);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
@@ -20,22 +21,23 @@ function Register() {
         const file = e.target[3].files[0];
 
         try {
-            // Create New User
+            // Create new user account
             const res = await createUserWithEmailAndPassword(auth, email, password);
 
-            // Unique Image Name
+            // Create unique image file name and upload to Firebase storage
             const date = new Date().getTime();
             const storageRef = ref(storage, `${displayName + date}`);
 
             await uploadBytesResumable(storageRef, file).then(() => {
                 getDownloadURL(storageRef).then(async (downloadURL) => {
                     try {
-                        // Update Profile
+                        // Update (Add) additional info to previously created user
                         await updateProfile(res.user, {
                             displayName,
                             photoURL: downloadURL,
                         });
-                        // Add to Database
+
+                        // Add user to database
                         await setDoc(doc(db, 'users', res.user.uid), {
                             uid: res.user.uid,
                             displayName,
@@ -43,13 +45,9 @@ function Register() {
                             photoURL: downloadURL,
                         });
 
-                        await setDoc(doc(db, 'userChats', res.user.uid), {
-                            // uid: res.user.uid,
-                            // displayName,
-                            // email,
-                            // photoURL: downloadURL,
-                        });
-                        // To Home Page
+                        // Create empty contact in contacts collection on database
+                        await setDoc(doc(db, 'contacts', res.user.uid), {});
+
                         navigate('/');
                     } catch (err) {
                         setError(true);

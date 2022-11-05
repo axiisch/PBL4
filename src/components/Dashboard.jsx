@@ -2,16 +2,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faRightFromBracket, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+import { AuthContext } from '../context/AuthContext';
+import { useContext } from 'react';
 
-function Navbar() {
+function Dashboard() {
+    const { currentUser } = useContext(AuthContext);
+
     return (
         <div className="relative z-50 flex flex-col items-center justify-between bg-gray-900 py-4 w-16 h-full ">
             <div className="flex items-center justify-center">
-                <img
-                    className="w-9 h-9 bg-cover rounded-full"
-                    src="https://i.pinimg.com/474x/e7/59/17/e75917f2f027002f522af4a9a3b7a88f.jpg"
-                    alt="Profile Picture"
-                />
+                <img className="w-9 h-9 bg-cover rounded-full" src={currentUser.photoURL} alt="error" />
             </div>
 
             <div className="flex items-center flex-col justify-center gap-3">
@@ -38,4 +38,4 @@ function Navbar() {
     );
 }
 
-export default Navbar;
+export default Dashboard;

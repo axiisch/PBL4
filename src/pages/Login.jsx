@@ -7,9 +7,9 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
 function Login() {
+    // Toggle password visibility
     const [visible, setVisibility] = useState(false);
     const [error, setError] = useState(false);
-
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
