@@ -1,6 +1,18 @@
 import { useState } from 'react';
 import { db } from '../firebase';
-import { collection, query, where, getDocs, setDoc, doc, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import {
+    collection,
+    query,
+    orderBy,
+    startAt,
+    endAt,
+    getDocs,
+    setDoc,
+    doc,
+    updateDoc,
+    serverTimestamp,
+    getDoc,
+} from 'firebase/firestore';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
@@ -14,7 +26,7 @@ function Search() {
 
     const handleSearch = async () => {
         setUser(null);
-        const q = query(collection(db, 'users'), where('displayName', '==', username));
+        const q = query(collection(db, 'users'), orderBy('displayName'), startAt(username), endAt(username + '\uf8ff'));
 
         try {
             // Map users collection => Find username => Set target user

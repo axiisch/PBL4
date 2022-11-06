@@ -38,7 +38,7 @@ function Contacts() {
                         <div
                             onClick={() => handleClick(contact[1].userInfo)}
                             key={contact[0]}
-                            className="cursor-pointer  px-6 py-3 flex items-center gap-3 hover:bg-gray-300"
+                            className="cursor-pointer px-6 py-3 flex items-center gap-3 hover:bg-gray-300"
                         >
                             <div>
                                 <img

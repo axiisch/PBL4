@@ -13,7 +13,12 @@ function ProfileModal() {
             <div className="w-96 bg-white shadow-2xl rounded-3xl">
                 <div className="px-14 py-8 flex items-center flex-col">
                     <label className="uppercase font-bold text-2xl mb-4">User Information</label>
-                    <div className="mb-4 w-full">
+
+                    <div>
+                        <img className="w-20 h-20 rounded-full" src={currentUser.photoURL} alt="loading" />
+                    </div>
+
+                    <div className="mb-4 w-full mt-4">
                         <label className="capitalize">Username</label>
                         <input
                             className="pointer-events-none pr-2 w-full py-2 border-b-2 border-cyan-400  focus: outline-none focus:border-cyan-500"
