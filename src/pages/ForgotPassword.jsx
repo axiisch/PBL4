@@ -26,7 +26,7 @@ function ForgotPassword() {
             <div className="w-96 bg-white shadow-2xl rounded-3xl">
                 {!exist && (
                     <form onSubmit={handleSubmit} className="px-14 py-8 flex items-center flex-col">
-                        <label className="uppercase font-bold text-2xl mb-4">forogt password</label>
+                        <label className="uppercase font-bold text-2xl mb-4">forgot password</label>
                         <div className="mb-4 w-full">
                             <label className="capitalize">email</label>
                             <input
