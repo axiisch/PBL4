@@ -71,11 +71,11 @@ function Input() {
     };
 
     return (
-        <div className="w-full h-[68px] flex items-center justify-center bg-white shadow-2xl">
+        <div className="w-full h-[68px] flex items-center justify-center bg-white shadow-2xl -z-0">
             <div className="flex items-center justify-center w-full px-6">
                 <label htmlFor="upload" className="flex items-center cursor-pointer gap-2 text-sm capitalize">
                     <FontAwesomeIcon
-                        className="p-2 text-xl  text-black rounded-full hover:bg-slate-500 hover:text-white"
+                        className="p-2 text-xl  text-black rounded-full hover:bg-black hover:text-white"
                         icon={faImage}
                     />
                 </label>
@@ -90,7 +90,7 @@ function Input() {
                 <input onChange={(e) => setImg(e.target.files[0])} id="upload" type="file" className="hidden" />
                 <button onClick={handleSend} className="btn-icon">
                     <FontAwesomeIcon
-                        className="p-2 text-xl  text-black rounded-full hover:bg-slate-500 hover:text-white"
+                        className="p-2 text-xl  text-black rounded-full hover:bg-black hover:text-white"
                         icon={faPaperPlane}
                     />
                 </button>

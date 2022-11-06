@@ -8,14 +8,12 @@ import { ModalContext } from '../context/ModalContext';
 
 function Dashboard() {
     const { currentUser } = useContext(AuthContext);
-    const [expand, setExpand] = useState(false);
+    const [expand, setExpand] = useState(true);
     const { showModal, setShowModal } = useContext(ModalContext);
 
     return (
         <div
-            className={`${
-                expand ? 'w-44' : 'w-15'
-            } relative z-50 flex flex-col  justify-between bg-gray-900 py-4 h-full `}
+            className={`${expand ? 'w-44' : 'w-15'} relative z-50 flex flex-col  justify-between bg-black pt-4 h-full `}
         >
             <div className="flex item-center justify-center flex-col">
                 <div className="flex item-center justify-center">
@@ -32,45 +30,40 @@ function Dashboard() {
                 <div
                     onClick={() => setExpand(!expand)}
                     className={`
-                ${!expand ? '' : ' hover:bg-slate-500'}
-                 py-3 flex flex-row cursor-pointer items-center w-full `}
+                ${!expand ? '' : ' hover:bg-slate-900'}
+                 py-3 flex flex-row cursor-pointer items-center w-full
+                 text-white  hover:text-black hover:bg-white `}
                 >
                     <button className="mx-2 btn-icon">
-                        <FontAwesomeIcon
-                            className="p-2 text-xl  text-white rounded-full hover:bg-slate-500"
-                            icon={faLeftRight}
-                        />
+                        <FontAwesomeIcon className="p-2 text-xl  rounded-full" icon={faLeftRight} />
                     </button>
-                    {expand && <span className="text-white">Collapse</span>}
+                    {expand && <span>Collapse</span>}
                 </div>
 
                 <div
                     onClick={() => setShowModal(!showModal)}
                     className={`
-                ${!expand ? '' : ' hover:bg-slate-500'}
-                 py-3 flex flex-row  cursor-pointer items-center w-full `}
+                ${!expand ? '' : ' hover:bg-slate-900'}
+                 py-3 flex flex-row  cursor-pointer items-center w-full
+                 text-white  hover:text-black hover:bg-white`}
                 >
                     <button className="mx-2 btn-icon">
-                        <FontAwesomeIcon
-                            className="p-2 text-xl  text-white rounded-full hover:bg-slate-500"
-                            icon={faGear}
-                        />
+                        <FontAwesomeIcon className="p-2 text-xl rounded-full  " icon={faGear} />
                     </button>
-                    {expand && <span className="text-white">Settings</span>}
+                    {expand && <span>Settings</span>}
                 </div>
                 <div
                     onClick={() => signOut(auth)}
                     className={`
-                ${!expand ? '' : ' hover:bg-slate-500'}
-                 py-3 flex flex-row  cursor-pointer items-center w-full `}
+                ${!expand ? '' : ' hover:bg-slate-900'}
+                 py-3 flex flex-row  cursor-pointer items-center w-full
+                 text-white  hover:text-black hover:bg-white
+                 `}
                 >
                     <button className="mx-2 btn-icon">
-                        <FontAwesomeIcon
-                            className="p-2 text-xl  text-white rounded-full hover:bg-slate-500"
-                            icon={faRightFromBracket}
-                        />
+                        <FontAwesomeIcon className="p-2 text-xl  rounded-full" icon={faRightFromBracket} />
                     </button>
-                    {expand && <span className="text-white">Sign Out</span>}
+                    {expand && <span>Sign Out</span>}
                 </div>
             </div>
         </div>

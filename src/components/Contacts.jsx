@@ -30,7 +30,7 @@ function Contacts() {
     }, [currentUser.uid]);
 
     return (
-        <div className="flex flex-col w-96 h-full shadow-2xl z-50  ">
+        <div className="flex flex-col w-96 h-full">
             <div className="grow bg-white overflow-scroll overflow-x-hidden">
                 {Object.entries(contacts)
                     ?.sort((a, b) => b[1].date - a[1].date)

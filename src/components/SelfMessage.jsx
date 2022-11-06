@@ -10,7 +10,7 @@ function SelfMessage({ message }) {
     return (
         <div ref={ref} className="flex justify-start flex-row-reverse mr-6 gap-6 mb-2">
             <div className="relative flex flex-col justify-start ">
-                <span className="text-white text-sm bg-gray-500 py-1 px-2 rounded-xl absolute top-1/2 transform -translate-y-1/2 -left-32 opacity-0 hover:opacity-100">
+                <span className="text-white text-sm bg-black py-1 px-2 rounded-2xl absolute top-1/2 transform -translate-y-1/2 -left-32 opacity-0 hover:opacity-100">
                     {message.date.toDate().toLocaleTimeString()}
                 </span>
                 <span className="flex justify-end">

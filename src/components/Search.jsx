@@ -29,11 +29,13 @@ function Search() {
         const q = query(collection(db, 'users'), orderBy('displayName'), startAt(username), endAt(username + '\uf8ff'));
 
         try {
-            // Map users collection => Find username => Set target user
-            const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc) => {
-                setUser(doc.data());
-            });
+            if (username !== '') {
+                // Map users collection => Find username => Set target user
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                    setUser(doc.data());
+                });
+            }
         } catch (err) {}
     };
 
@@ -79,12 +81,12 @@ function Search() {
     };
 
     return (
-        <div className="flex flex-col w-96 h-auto shadow-2xl z-50  ">
-            <div className="w-full py-4 px-6 drop-shadow-lg bg-white">
+        <div className="flex flex-col w-96 h-auto">
+            <div className="w-full py-4 px-6  bg-white">
                 <input
                     onKeyDown={handleKey}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="bg-gray-800 w-full h-9 text-white  rounded-3xl px-4 py-2  focus: outline-none"
+                    className="bg-black  w-full h-9 text-white  rounded-3xl px-4 py-2  focus: outline-none"
                     type="text"
                     placeholder="Search people"
                 />

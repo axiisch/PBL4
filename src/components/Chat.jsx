@@ -15,14 +15,14 @@ function Chat() {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-6">
                         <img className="w-9 h-9 bg-cover rounded-full" src={data.user?.photoURL} alt="loading" />
-                        <label>{data.user?.displayName}</label>
+                        <label className="font-semibold">{data.user?.displayName}</label>
                     </div>
-                    <button className="btn-icon">
+                    {/* <button className="btn-icon">
                         <FontAwesomeIcon
                             className="p-2 w-[36px] text-xl  text-white rounded-full hover:bg-slate-500"
                             icon={faEllipsis}
                         />
-                    </button>
+                    </button> */}
                 </div>
             </div>
             <Chatbox />
