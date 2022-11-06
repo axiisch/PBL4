@@ -4,9 +4,11 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { AuthContext } from '../context/AuthContext';
 import { useContext } from 'react';
+import { ModalContext } from '../context/ModalContext';
 
 function Dashboard() {
     const { currentUser } = useContext(AuthContext);
+    const { showModal, setShowModal } = useContext(ModalContext);
 
     return (
         <div className="relative z-50 flex flex-col items-center justify-between bg-gray-900 py-4 w-16 h-full ">
@@ -23,6 +25,7 @@ function Dashboard() {
                 </button>
                 <button className="btn-icon">
                     <FontAwesomeIcon
+                        onClick={() => setShowModal(!showModal)}
                         className="p-2 text-xl  text-white rounded-full hover:bg-slate-500"
                         icon={faGear}
                     />

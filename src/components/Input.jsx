@@ -15,53 +15,59 @@ function Input() {
     const { currentUser } = useContext(AuthContext);
     const { data } = useContext(ChatContext);
 
+    const handleKey = (e) => {
+        e.code === 'Enter' && handleSend();
+    };
+
     const handleSend = async () => {
-        if (img) {
-            const storageRef = ref(storage, uuid());
-            const uploadTask = uploadBytesResumable(storageRef, img);
+        if (text !== '' || img !== null) {
+            if (img) {
+                const storageRef = ref(storage, uuid());
+                const uploadTask = uploadBytesResumable(storageRef, img);
 
-            uploadTask.on(
-                (error) => {},
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-                        await updateDoc(doc(db, 'messages', data.chatId), {
-                            messages: arrayUnion({
-                                id: uuid(),
-                                text,
-                                senderId: currentUser.uid,
-                                date: Timestamp.now(),
-                                img: downloadURL,
-                            }),
+                uploadTask.on(
+                    (error) => {},
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                            await updateDoc(doc(db, 'messages', data.chatId), {
+                                messages: arrayUnion({
+                                    id: uuid(),
+                                    text,
+                                    senderId: currentUser.uid,
+                                    date: Timestamp.now(),
+                                    img: downloadURL,
+                                }),
+                            });
                         });
-                    });
-                },
-            );
-        } else {
-            await updateDoc(doc(db, 'messages', data.chatId), {
-                messages: arrayUnion({
-                    id: uuid(),
-                    text,
-                    senderId: currentUser.uid,
-                    date: Timestamp.now(),
-                    img: null,
-                }),
-            });
-            await updateDoc(doc(db, 'userChats', currentUser.uid), {
-                [data.chatId + '.lastMessage']: {
-                    text,
-                },
-                [data.chatId + '.date']: serverTimestamp(),
-            });
+                    },
+                );
+            } else {
+                await updateDoc(doc(db, 'messages', data.chatId), {
+                    messages: arrayUnion({
+                        id: uuid(),
+                        text,
+                        senderId: currentUser.uid,
+                        date: Timestamp.now(),
+                        img: null,
+                    }),
+                });
+                await updateDoc(doc(db, 'contacts', currentUser.uid), {
+                    [data.chatId + '.lastMessage']: {
+                        text,
+                    },
+                    [data.chatId + '.date']: serverTimestamp(),
+                });
 
-            await updateDoc(doc(db, 'userChats', data.user.uid), {
-                [data.chatId + '.lastMessage']: {
-                    text,
-                },
-                [data.chatId + '.date']: serverTimestamp(),
-            });
+                await updateDoc(doc(db, 'contacts', data.user.uid), {
+                    [data.chatId + '.lastMessage']: {
+                        text,
+                    },
+                    [data.chatId + '.date']: serverTimestamp(),
+                });
+            }
+            setText('');
+            setImg(null);
         }
-        setText('');
-        setImg(null);
     };
 
     return (
@@ -74,6 +80,7 @@ function Input() {
                     />
                 </label>
                 <input
+                    onKeyDown={handleKey}
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     className=" mx-6 w-full h-9 border-b-2 border-gray-400  py-2  focus: outline-none focus:border-gray-600"

@@ -3,7 +3,7 @@ import Search from './Search';
 
 function Sidebar() {
     return (
-        <div className="bg-slate-700 flex flex-col">
+        <div className="z-10 bg-slate-700 flex flex-col">
             <Search />
             <Contacts />
         </div>

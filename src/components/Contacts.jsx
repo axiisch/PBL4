@@ -17,7 +17,7 @@ function Contacts() {
 
     useEffect(() => {
         const getContacts = () => {
-            const unsub = onSnapshot(doc(db, 'userChats', currentUser.uid), (doc) => {
+            const unsub = onSnapshot(doc(db, 'contacts', currentUser.uid), (doc) => {
                 setContacts(doc.data());
                 console.log(doc.data());
             });

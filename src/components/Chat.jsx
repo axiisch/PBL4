@@ -14,11 +14,7 @@ function Chat() {
             <div className="w-full py-4  px-6 h-[68px] bg-white ">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-6">
-                        <img
-                            className="w-9 h-9 bg-cover rounded-full"
-                            src={data.user?.photoURL}
-                            alt="Profile Picture"
-                        />
+                        <img className="w-9 h-9 bg-cover rounded-full" src={data.user?.photoURL} alt="loading" />
                         <label>{data.user?.displayName}</label>
                     </div>
                     <button className="btn-icon">

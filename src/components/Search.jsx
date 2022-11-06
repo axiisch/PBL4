@@ -41,7 +41,7 @@ function Search() {
                 await setDoc(doc(db, 'messages', combinedId), { messages: [] });
 
                 // [Nested collection] Create connection on both user ends
-                await updateDoc(doc(db, 'userChats', currentUser.uid), {
+                await updateDoc(doc(db, 'contacts', currentUser.uid), {
                     [combinedId + '.userInfo']: {
                         uid: user.uid,
                         displayName: user.displayName,
@@ -50,7 +50,7 @@ function Search() {
                     [combinedId + '.date']: serverTimestamp(),
                 });
 
-                await updateDoc(doc(db, 'userChats', user.uid), {
+                await updateDoc(doc(db, 'contacts', user.uid), {
                     [combinedId + '.userInfo']: {
                         uid: currentUser.uid,
                         displayName: currentUser.displayName,
