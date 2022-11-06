@@ -4,6 +4,7 @@ import Register from './pages/Register';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
+import ForgotPassword from './pages/ForgotPassword';
 
 function App() {
     const { currentUser } = useContext(AuthContext);
@@ -15,6 +16,7 @@ function App() {
                     <Route index element={currentUser ? <Home /> : <Login />} />
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
+                    <Route path="forgotpassword" element={<ForgotPassword />} />
                 </Route>
             </Routes>
         </BrowserRouter>

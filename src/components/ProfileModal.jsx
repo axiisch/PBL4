@@ -19,7 +19,7 @@ function ProfileModal() {
                     </div>
 
                     <div className="mb-4 w-full mt-4">
-                        <label className="capitalize">Username</label>
+                        <label className="capitalize">display name</label>
                         <input
                             className="pointer-events-none pr-2 w-full py-2 border-b-2 border-cyan-400  focus: outline-none focus:border-cyan-500"
                             type="text"
