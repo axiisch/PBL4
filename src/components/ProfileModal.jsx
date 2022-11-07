@@ -3,17 +3,32 @@ import { AuthContext } from '../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose, faCamera } from '@fortawesome/free-solid-svg-icons';
 
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { ModalContext } from '../context/ModalContext';
+
+import { sendPasswordResetEmail, signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+// import { useEffect } from 'react';
+import { useState } from 'react';
 
 function ProfileModal() {
     const { currentUser } = useContext(AuthContext);
-    const navigate = useNavigate();
+    const [sent, setSent] = useState(false);
+    // const navigate = useNavigate();
 
     const { showModal, setShowModal } = useContext(ModalContext);
     const handleClick = () => {
-        navigate('/forgotpassword');
+        sendPasswordResetEmail(auth, currentUser.email)
+            .then(() => {
+                setSent(true);
+                // Need fixes : useEffect => rerender timer
+                setTimeout(() => {
+                    signOut(auth);
+                }, 10000);
+            })
+            .catch((err) => {});
     };
+
     // const [open, setOpen] = useState(false);
     return (
         <div className=" w-full h-full bg-black bg-opacity-80 flex justify-center items-center absolute top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 z-50 ">
@@ -25,16 +40,13 @@ function ProfileModal() {
                     >
                         <FontAwesomeIcon icon={faClose} />
                     </span>
-
                     <label className="uppercase font-bold text-2xl mb-4">User Information</label>
-
                     <div className="relative">
                         <span className="text-2xl cursor-pointer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-0 hover:opacity-30 rounded-full hover:bg-black hover:text-white flex items-center justify-center">
                             <FontAwesomeIcon icon={faCamera} />
                         </span>
                         <img className="w-20 h-20 rounded-full" src={currentUser.photoURL} alt="loading" />
                     </div>
-
                     <div className="mb-4 w-full mt-4">
                         <label className="capitalize">display name</label>
                         <input
@@ -43,7 +55,6 @@ function ProfileModal() {
                             defaultValue={currentUser.displayName}
                         ></input>
                     </div>
-
                     <div className="w-full mb-4 ">
                         <label className="capitalize">Email</label>
                         <div className="relative">
@@ -55,15 +66,20 @@ function ProfileModal() {
                             <span className="h absolute right-0 bottom-2"></span>
                         </div>
                     </div>
-
                     <button
                         onClick={handleClick}
                         className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl bg-black hover:bg-opacity-80"
                     >
                         change password
                     </button>
-
-                    <span className="text-sm text-cyan-400 capitalize"></span>
+                    {sent && (
+                        <span className="text-sm text-center text-black capitalize">
+                            a link to change your password has been sent to your email
+                        </span>
+                    )}
+                    {sent && (
+                        <span className="text-sm text-center text-black capitalize">Logging out in 8 seconds...</span>
+                    )}
                 </div>
             </div>
         </div>
