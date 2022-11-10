@@ -111,7 +111,7 @@ function Register() {
                         </label>
                     </div>
 
-                    <button className="cursor-pointer font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl bg-gradient-to-r from-blue-500 to-pink-500  hover:from-pink-400 hover:to-blue-400">
+                    <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl  bg-black hover:bg-opacity-80">
                         register
                     </button>
 

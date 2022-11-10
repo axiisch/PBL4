@@ -59,8 +59,8 @@ function Login() {
                     <label className="text-cyan-400 text-sm capitalize w-full flex justify-end">
                         <Link to="/forgotpassword">forgot password</Link>
                     </label>
-
-                    <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl bg-gradient-to-r from-blue-500 to-pink-500  hover:from-pink-400 hover:to-blue-400">
+                    {/* bg-gradient-to-r from-blue-500 to-pink-500  hover:from-pink-400 hover:to-blue-400 */}
+                    <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl  bg-black hover:bg-opacity-80">
                         login
                     </button>
 

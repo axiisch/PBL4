@@ -21,7 +21,7 @@ function ForgotPassword() {
                 <form onSubmit={handleSubmit} className="px-14 py-8 flex items-center flex-col">
                     <label className="uppercase font-bold text-2xl mb-4">forgot password</label>
                     <div className="mb-4 w-full">
-                        <label className="capitalize">email</label>
+                        <label className="capitalize">Change password via email link</label>
                         <input
                             className="pr-2 w-full py-2 border-b-2 border-cyan-400  focus: outline-none focus:border-cyan-500"
                             type="email"
@@ -29,18 +29,18 @@ function ForgotPassword() {
                         ></input>
                         {/* <span className="text-sm mt-1 block h-4 text-red-600">error</span> */}
                     </div>
-                    <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl bg-gradient-to-r from-blue-500 to-pink-500  hover:from-pink-400 hover:to-blue-400">
-                        check
+                    <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl  bg-black hover:bg-opacity-80">
+                        send
                     </button>
+                    {sent && (
+                        <span className="text-sm text-center text-black capitalize mb-4">
+                            link sent! check your inbox and spam
+                        </span>
+                    )}
                     <label className="capitalize text-sm">Return to login</label>
                     <span className="text-sm text-cyan-400 capitalize">
                         <Link to="/login">Login</Link>
                     </span>
-                    {sent && (
-                        <span className="text-sm text-center text-black capitalize">
-                            a link to change your password has been sent to your email
-                        </span>
-                    )}
                 </form>
             </div>
         </div>

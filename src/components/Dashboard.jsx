@@ -5,11 +5,18 @@ import { auth } from '../firebase';
 import { AuthContext } from '../context/AuthContext';
 import { useContext, useState } from 'react';
 import { ModalContext } from '../context/ModalContext';
+import { ChatContext } from '../context/ChatContext';
 
 function Dashboard() {
     const { currentUser } = useContext(AuthContext);
-    const [expand, setExpand] = useState(true);
     const { showModal, setShowModal } = useContext(ModalContext);
+    const { dispatch } = useContext(ChatContext);
+    const [expand, setExpand] = useState(true);
+
+    const handleSignOut = () => {
+        dispatch({ type: 'CLEAR_USER' });
+        signOut(auth);
+    };
 
     return (
         <div
@@ -53,7 +60,7 @@ function Dashboard() {
                     {expand && <span>Settings</span>}
                 </div>
                 <div
-                    onClick={() => signOut(auth)}
+                    onClick={handleSignOut}
                     className={`
                 ${!expand ? '' : ' hover:bg-slate-900'}
                  py-3 flex flex-row  cursor-pointer items-center w-full

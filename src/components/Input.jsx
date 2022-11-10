@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faImage, faPaperPlane, faClose } from '@fortawesome/free-solid-svg-icons';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { ChatContext } from '../context/ChatContext';
@@ -11,12 +11,25 @@ import { uploadBytesResumable, getDownloadURL, ref } from 'firebase/storage';
 function Input() {
     const [text, setText] = useState('');
     const [img, setImg] = useState(null);
+    const [imgPreview, setImgPreview] = useState(null);
 
     const { currentUser } = useContext(AuthContext);
     const { data } = useContext(ChatContext);
 
+    const imageChange = (e) => {
+        if (e.target.files.length !== 0) {
+            setImg(e.target.files[0]);
+            setImgPreview(e.target.files[0]);
+        }
+    };
+
     const handleKey = (e) => {
         e.code === 'Enter' && handleSend();
+    };
+
+    const handleClearImage = () => {
+        setImg(null);
+        setImgPreview(null);
     };
 
     const handleSend = async () => {
@@ -67,12 +80,13 @@ function Input() {
             }
             setText('');
             setImg(null);
+            setImgPreview(null);
         }
     };
 
     return (
         <div className="w-full h-[68px] flex items-center justify-center bg-white shadow-2xl -z-0">
-            <div className="flex items-center justify-center w-full px-6">
+            <div className=" relative flex items-center justify-center w-full px-6">
                 <label htmlFor="upload" className="flex items-center cursor-pointer gap-2 text-sm capitalize">
                     <FontAwesomeIcon
                         className="p-2 text-xl  text-black rounded-full hover:bg-black hover:text-white"
@@ -87,10 +101,31 @@ function Input() {
                     type="text"
                     placeholder="Message"
                 />
-                <input onChange={(e) => setImg(e.target.files[0])} id="upload" type="file" className="hidden" />
+                <input onChange={imageChange} id="upload" type="file" className="hidden" />
+                <div className="left-10 bottom-16 absolute">
+                    <div className="relative">
+                        {imgPreview !== null ? (
+                            <div>
+                                <img
+                                    src={URL.createObjectURL(imgPreview)}
+                                    alt=""
+                                    className="shadow-xl max-h-40 rounded-xl "
+                                />
+                                <FontAwesomeIcon
+                                    onClick={handleClearImage}
+                                    className="shadow-xl bg-transparent absolute top-2 right-3 text-base  text-white cursor-pointer"
+                                    icon={faClose}
+                                />
+                            </div>
+                        ) : (
+                            <span></span>
+                        )}
+                    </div>
+                </div>
+
                 <button onClick={handleSend} className="btn-icon">
                     <FontAwesomeIcon
-                        className="p-2 text-xl  text-black rounded-full hover:bg-black hover:text-white"
+                        className="text-xl p-2 text-black rounded-full hover:bg-black hover:text-white"
                         icon={faPaperPlane}
                     />
                 </button>
