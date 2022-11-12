@@ -11,7 +11,7 @@ function Dashboard() {
     const { currentUser } = useContext(AuthContext);
     const { showModal, setShowModal } = useContext(ModalContext);
     const { dispatch } = useContext(ChatContext);
-    const [expand, setExpand] = useState(true);
+    const [expand, setExpand] = useState(false);
 
     const handleSignOut = () => {
         dispatch({ type: 'CLEAR_USER' });

@@ -44,7 +44,7 @@ function Message({ message }) {
     }, [data.user.userRef]);
 
     return (
-        <div ref={ref} className="flex flex-row ml-6 gap-6">
+        <div ref={ref} className="flex flex-row ml-6 gap-6 mb-3">
             <div className="flex items-start justify-center">
                 <img className="w-9 h-9 bg-cover rounded-full" src={user?.photoURL} alt="loading" />
             </div>
@@ -53,7 +53,7 @@ function Message({ message }) {
                     {message.date.toDate().toLocaleTimeString()}
                 </span>
                 {message.text !== '' ? (
-                    <p className=" inline-block break-words max-w-xs text-white bg-gray-500 px-4 py-2 rounded-xl mb-3">
+                    <p className=" inline-block break-words max-w-xs text-white bg-gray-500 px-4 py-[6px] rounded-xl ">
                         {message.text}
                     </p>
                 ) : (
@@ -61,7 +61,7 @@ function Message({ message }) {
                 )}
 
                 {message.img ? (
-                    <img className="bg-cover max-w-xs rounded-xl mb-3" src={message.img} alt="loading" />
+                    <img className="bg-cover max-w-xs rounded-xl " src={message.img} alt="loading" />
                 ) : (
                     <span></span>
                 )}

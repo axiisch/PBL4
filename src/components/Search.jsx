@@ -75,7 +75,7 @@ function Search() {
     };
 
     return (
-        <div className="flex flex-col w-96 h-auto">
+        <div className="flex flex-col w-full h-auto">
             <div className="w-full py-4 px-6  bg-white">
                 <input
                     onKeyDown={handleKey}

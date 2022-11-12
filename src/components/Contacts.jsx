@@ -20,7 +20,7 @@ import {
 import { v4 as uuid } from 'uuid';
 
 function Contacts() {
-    const [users, setUsers] = useState([]);
+    // const [users, setUsers] = useState([]);
     const [real, setReal] = useState([]);
     const [contacts, setContacts] = useState([]);
     const { currentUser } = useContext(AuthContext);
@@ -32,6 +32,7 @@ function Contacts() {
 
     useEffect(() => {
         const getContacts = async () => {
+            let users = [];
             const q = query(collection(db, 'users'));
             try {
                 const querySnapshot = await getDocs(q);
@@ -56,7 +57,7 @@ function Contacts() {
     }, [currentUser.uid]);
 
     return (
-        <div className="flex flex-col w-96 h-full">
+        <div className="flex flex-col w-full h-full">
             <div className="grow bg-white overflow-scroll overflow-x-hidden">
                 {Object.entries(contacts)
                     ?.sort((a, b) => b[1].date - a[1].date)
@@ -76,10 +77,10 @@ function Contacts() {
                                         />
                                     </div>
                                     <div className="grow flex flex-col">
-                                        <label className="cursor-pointer max-w-[270px] whitespace-nowrap overflow-hidden font-semibold">
+                                        <label className="cursor-pointer max-w-[250px] whitespace-nowrap overflow-hidden font-semibold">
                                             {user.displayName}
                                         </label>
-                                        <p className="max-w-[270px] whitespace-nowrap overflow-hidden text-sm text-gray-600 ">
+                                        <p className="max-w-[250px] whitespace-nowrap overflow-hidden text-sm text-gray-600 ">
                                             {contact[1].latestMessage?.text} &nbsp;
                                         </p>
                                     </div>

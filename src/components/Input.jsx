@@ -26,9 +26,6 @@ function Input() {
     const handleKey = (e) => {
         if (e.code === 'Enter') {
             handleSend();
-            setText('');
-            setImg(null);
-            setImgPreview(null);
         }
     };
 
@@ -84,6 +81,9 @@ function Input() {
                 });
             }
         }
+        setText('');
+        setImg(null);
+        setImgPreview(null);
     };
 
     return (
