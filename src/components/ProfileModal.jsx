@@ -2,18 +2,17 @@ import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose, faCamera, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { db, storage } from '../firebase';
+import { doc, arrayUnion, Timestamp, serverTimestamp, updateDoc } from 'firebase/firestore';
 
 import { updateProfile } from 'firebase/auth';
-import { storage } from '../firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 // import { useNavigate } from 'react-router-dom';
 import { ModalContext } from '../context/ModalContext';
 
-import { sendPasswordResetEmail, signOut } from 'firebase/auth';
 // import { useEffect } from 'react';
 import { useState } from 'react';
-import { async } from '@firebase/util';
 
 function ProfileModal() {
     const { currentUser } = useContext(AuthContext);
@@ -34,22 +33,36 @@ function ProfileModal() {
         // console.log(e.target[1].value);
         const file = e.target[0].files[0];
         console.log(file);
-        // if (file !== undefined) {
-        //     try {
-        //         const date = new Date().getTime();
-        //         const storageRef = ref(storage, `${displayName + date}`);
-        //         await uploadBytesResumable(storageRef, file).then(() => {
-        //             getDownloadURL(storageRef).then(async (downloadURL) => {
-        //                 try {
-        //                     await updateProfile(currentUser, {
-        //                         displayName,
-        //                         photoURL: downloadURL,
-        //                     });
-        //                 } catch (err) {}
-        //             });
-        //         });
-        //     } catch (err) {}
-        // }
+        if (file !== undefined) {
+            try {
+                const date = new Date().getTime();
+                const storageRef = ref(storage, `${displayName + date}`);
+                await uploadBytesResumable(storageRef, file).then(() => {
+                    getDownloadURL(storageRef).then(async (downloadURL) => {
+                        try {
+                            await updateProfile(currentUser, {
+                                displayName,
+                                photoURL: downloadURL,
+                            });
+                            await updateDoc(doc(db, 'users', currentUser.uid), {
+                                displayName,
+                                photoURL: downloadURL,
+                            });
+                        } catch (err) {}
+                    });
+                });
+            } catch (err) {}
+        }
+        if (file === undefined) {
+            try {
+                await updateProfile(currentUser, {
+                    displayName,
+                });
+                await updateDoc(doc(db, 'users', currentUser.uid), {
+                    displayName,
+                });
+            } catch (err) {}
+        }
     };
     /////////////////////////////////////// !!!
     // const handleClick = () => {

@@ -56,21 +56,15 @@ function Search() {
 
                 // [Nested collection] Create connection on both user ends
                 await updateDoc(doc(db, 'contacts', currentUser.uid), {
-                    [combinedId + '.userInfo']: {
-                        uid: user.uid,
-                        displayName: user.displayName,
-                        photoURL: user.photoURL,
-                    },
+                    [combinedId + '.userRef']: user.uid,
                     [combinedId + '.date']: serverTimestamp(),
+                    [combinedId + '.latestMessage']: '',
                 });
 
                 await updateDoc(doc(db, 'contacts', user.uid), {
-                    [combinedId + '.userInfo']: {
-                        uid: currentUser.uid,
-                        displayName: currentUser.displayName,
-                        photoURL: currentUser.photoURL,
-                    },
+                    [combinedId + '.userRef']: currentUser.uid,
                     [combinedId + '.date']: serverTimestamp(),
+                    [combinedId + '.latestMessage']: '',
                 });
             }
         } catch (err) {}

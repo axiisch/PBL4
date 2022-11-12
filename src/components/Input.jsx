@@ -24,7 +24,12 @@ function Input() {
     };
 
     const handleKey = (e) => {
-        e.code === 'Enter' && handleSend();
+        if (e.code === 'Enter') {
+            handleSend();
+            setText('');
+            setImg(null);
+            setImgPreview(null);
+        }
     };
 
     const handleClearImage = () => {
@@ -65,22 +70,19 @@ function Input() {
                     }),
                 });
                 await updateDoc(doc(db, 'contacts', currentUser.uid), {
-                    [data.chatId + '.lastMessage']: {
+                    [data.chatId + '.latestMessage']: {
                         text,
                     },
                     [data.chatId + '.date']: serverTimestamp(),
                 });
 
                 await updateDoc(doc(db, 'contacts', data.user.uid), {
-                    [data.chatId + '.lastMessage']: {
+                    [data.chatId + '.latestMessage']: {
                         text,
                     },
                     [data.chatId + '.date']: serverTimestamp(),
                 });
             }
-            setText('');
-            setImg(null);
-            setImgPreview(null);
         }
     };
 

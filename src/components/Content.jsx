@@ -5,7 +5,7 @@ import Sidebar from './Sidebar';
 
 function Content() {
     const user = useContext(ChatContext);
-    console.log(user);
+    // console.log(user);
     return (
         <div className="w-full bg-white flex">
             <Sidebar />
