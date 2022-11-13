@@ -43,12 +43,14 @@ function Message({ message }) {
         data.user.userRef && getInfo();
     }, [data.user.userRef]);
 
-    return (
-        <div ref={ref} className="flex flex-row ml-6 gap-6 mb-3">
+    return message.deleted ? (
+        <span></span>
+    ) : (
+        <div ref={ref} className="flex flex-row ml-6 gap-6 mb-3 group">
             <div className="flex items-start justify-center">
                 <img className="w-9 h-9 bg-cover rounded-full" src={user?.photoURL} alt="loading" />
             </div>
-            <div className="relative group">
+            <div className="relative ">
                 <span className="text-white text-sm bg-black py-1 px-2 rounded-2xl absolute top-1/2 transform -translate-y-1/2 -right-32 hidden group-hover:block">
                     {message.date.toDate().toLocaleTimeString()}
                 </span>

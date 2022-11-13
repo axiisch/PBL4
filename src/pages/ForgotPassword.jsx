@@ -6,13 +6,17 @@ import { auth } from '../firebase';
 
 function ForgotPassword() {
     const [sent, setSent] = useState(false);
+    const [error, setError] = useState('');
     const handleSubmit = (e) => {
+        setError(false);
         e.preventDefault();
         sendPasswordResetEmail(auth, e.target[0].value)
             .then(() => {
                 setSent(true);
             })
-            .catch((err) => {});
+            .catch((err) => {
+                setError('Invalid Email');
+            });
     };
 
     return (
@@ -20,8 +24,8 @@ function ForgotPassword() {
             <div className="w-96 bg-white shadow-2xl rounded-3xl">
                 <form onSubmit={handleSubmit} className="px-14 py-8 flex items-center flex-col">
                     <label className="uppercase font-bold text-2xl mb-4">forgot password</label>
-                    <div className="mb-4 w-full">
-                        <label className="capitalize">Change password via email link</label>
+                    <div className="mb-2 w-full">
+                        <label className="capitalize">Change password via email</label>
                         <input
                             className="pr-2 w-full py-2 border-b-2 border-cyan-400  focus: outline-none focus:border-cyan-500"
                             type="email"
@@ -29,7 +33,10 @@ function ForgotPassword() {
                         ></input>
                         {/* <span className="text-sm mt-1 block h-4 text-red-600">error</span> */}
                     </div>
-                    <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl  bg-black hover:bg-opacity-80">
+
+                    {error === '' ? <span>&nbsp;</span> : <span className="text text-red-500 w-full">{error}</span>}
+
+                    <button className="font-semibold mb-6 mt-4 py-3 w-full uppercase text-white rounded-3xl  bg-black hover:bg-opacity-80">
                         send
                     </button>
                     {sent && (

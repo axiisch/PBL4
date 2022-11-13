@@ -15,36 +15,54 @@ import {
 } from 'firebase/firestore';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { v4 as uuid } from 'uuid';
 
 function Search() {
     // Hold search content
     const [username, setUsername] = useState('');
     // Hold targeted user
     const [user, setUser] = useState(null);
-
+    const [real, setReal] = useState([]);
     const { currentUser } = useContext(AuthContext);
 
     const handleSearch = async () => {
-        setUser(null);
-        const q = query(collection(db, 'users'), orderBy('displayName'), startAt(username), endAt(username + '\uf8ff'));
-
-        try {
-            if (username !== '') {
-                // Map users collection => Find username => Set target user
+        if (username !== '') {
+            setUser(null);
+            const q = query(
+                collection(db, 'users'),
+                orderBy('displayName'),
+                startAt(username),
+                endAt(username + '\uf8ff'),
+            );
+            let users = [];
+            try {
                 const querySnapshot = await getDocs(q);
                 querySnapshot.forEach((doc) => {
-                    setUser(doc.data());
+                    users.push(doc.data());
                 });
-            }
-        } catch (err) {}
+                console.log(users);
+                setReal(users);
+            } catch (err) {}
+        }
+
+        // try {
+        //     if (username !== '') {
+        //         // Map users collection => Find username => Set target user
+        //         const querySnapshot = await getDocs(q);
+        //         querySnapshot.forEach((doc) => {
+        //             setUser(doc.data());
+        //         });
+        //     }
+        // } catch (err) {}
     };
 
     const handleKey = (e) => {
         e.code === 'Enter' && handleSearch();
     };
 
-    const handleSelect = async () => {
+    const handleSelect = async (user) => {
         // Connect uid of both users and set it as an array
+        setReal([]);
         const combinedId = currentUser.uid > user.uid ? currentUser.uid + user.uid : user.uid + currentUser.uid;
         try {
             const res = await getDoc(doc(db, 'messages', combinedId));
@@ -85,24 +103,25 @@ function Search() {
                     placeholder="Search people"
                 />
             </div>
-
-            <div className="grow bg-white">
-                {user && (
-                    <div
-                        onClick={handleSelect}
-                        className="cursor-pointer  px-6 py-3 flex items-center gap-3 hover:bg-gray-300"
-                    >
-                        <div>
-                            <img className="w-14 h-14 bg-cover rounded-full" src={user.photoURL} alt="error" />
+            {real.map((temp) => (
+                <div key={uuid()} className="grow bg-white">
+                    {temp && (
+                        <div
+                            onClick={() => handleSelect(temp)}
+                            className="cursor-pointer  px-6 py-3 flex items-center gap-3 hover:bg-gray-300"
+                        >
+                            <div>
+                                <img className="w-14 h-14 bg-cover rounded-full" src={temp.photoURL} alt="error" />
+                            </div>
+                            <div className="grow flex flex-col">
+                                <label className="cursor-pointer max-w-[270px] whitespace-nowrap overflow-hidden font-semibold">
+                                    {temp.displayName}
+                                </label>
+                            </div>
                         </div>
-                        <div className="grow flex flex-col">
-                            <label className="cursor-pointer max-w-[270px] whitespace-nowrap overflow-hidden font-semibold">
-                                {user.displayName}
-                            </label>
-                        </div>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            ))}
         </div>
     );
 }

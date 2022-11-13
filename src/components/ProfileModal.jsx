@@ -1,18 +1,22 @@
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose, faCamera, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faClose, faCamera, faEdit, faLock } from '@fortawesome/free-solid-svg-icons';
 import { db, storage } from '../firebase';
 import { doc, arrayUnion, Timestamp, serverTimestamp, updateDoc } from 'firebase/firestore';
 
 import { updateProfile } from 'firebase/auth';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../firebase';
+
 // import { useNavigate } from 'react-router-dom';
 import { ModalContext } from '../context/ModalContext';
 
 // import { useEffect } from 'react';
 import { useState } from 'react';
+import { signOut } from 'firebase/auth';
 
 function ProfileModal() {
     const { currentUser } = useContext(AuthContext);
@@ -65,17 +69,17 @@ function ProfileModal() {
         }
     };
     /////////////////////////////////////// !!!
-    // const handleClick = () => {
-    //     sendPasswordResetEmail(auth, currentUser.email)
-    //         .then(() => {
-    //             setSent(true);
-    //             // Need fixes : useEffect => rerender timer
-    //             setTimeout(() => {
-    //                 signOut(auth);
-    //             }, 10000);
-    //         })
-    //         .catch((err) => {});
-    // };
+    const handleChangePassword = () => {
+        sendPasswordResetEmail(auth, currentUser.email)
+            .then(() => {
+                setSent(true);
+                // Need fixes : useEffect => rerender timer
+                setTimeout(() => {
+                    signOut(auth);
+                }, 10000);
+            })
+            .catch((err) => {});
+    };
 
     // const [open, setOpen] = useState(false);
     return (
@@ -116,6 +120,7 @@ function ProfileModal() {
                             />
                         </div>
                     </div>
+
                     <div className="w-full mb-4 ">
                         <label className="capitalize">Email</label>
                         <div className="relative">
@@ -128,16 +133,18 @@ function ProfileModal() {
                         </div>
                     </div>
 
+                    <button
+                        onClick={handleChangePassword}
+                        className="font-semibold mt-4 py-3 w-full uppercase text-white rounded-3xl bg-black hover:bg-opacity-80"
+                    >
+                        Change password
+                        {/* <FontAwesomeIcon className="p-2 text-xl  rounded-full" icon={faLock} /> */}
+                    </button>
+
                     <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl bg-black hover:bg-opacity-80">
                         save changes
                     </button>
 
-                    {/* <button
-                        onClick={handleClick}
-                        className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl bg-black hover:bg-opacity-80"
-                    >
-                        change password
-                    </button>
                     {sent && (
                         <span className="text-sm text-center text-black capitalize">
                             a link to change your password has been sent to your email
@@ -145,7 +152,7 @@ function ProfileModal() {
                     )}
                     {sent && (
                         <span className="text-sm text-center text-black capitalize">Logging out in 8 seconds...</span>
-                    )} */}
+                    )}
                 </form>
             </div>
         </div>

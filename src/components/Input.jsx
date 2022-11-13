@@ -73,7 +73,7 @@ function Input() {
                     [data.chatId + '.date']: serverTimestamp(),
                 });
 
-                await updateDoc(doc(db, 'contacts', data.user.uid), {
+                await updateDoc(doc(db, 'contacts', data.user.userRef), {
                     [data.chatId + '.latestMessage']: {
                         text,
                     },
