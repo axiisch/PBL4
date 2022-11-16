@@ -3,21 +3,11 @@ import { db } from '../firebase';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { ChatContext } from '../context/ChatContext';
-import {
-    collection,
-    query,
-    orderBy,
-    startAt,
-    endAt,
-    getDocs,
-    setDoc,
-    doc,
-    updateDoc,
-    serverTimestamp,
-    getDoc,
-    onSnapshot,
-} from 'firebase/firestore';
+import { collection, query, getDocs, doc, onSnapshot } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 function Contacts() {
     // const [users, setUsers] = useState([]);
@@ -69,11 +59,13 @@ function Contacts() {
                                     key={uuid()}
                                     className="cursor-pointer px-6 py-3 flex items-center gap-3 hover:bg-gray-300"
                                 >
-                                    <div>
-                                        <img
-                                            className="w-14 h-14 bg-cover rounded-full"
-                                            src={user.photoURL}
-                                            alt="error"
+                                    <div className="relative">
+                                        <img className="w-14 h-14 bg-cover rounded-full" src={user.photoURL} alt="" />
+                                        <FontAwesomeIcon
+                                            className={`${
+                                                user.online ? 'text-green-500' : 'text-gray-500'
+                                            } absolute -right-1 bottom-1 text-md border-2 rounded-full border-white`}
+                                            icon={faCircle}
                                         />
                                     </div>
                                     <div className="grow flex flex-col">

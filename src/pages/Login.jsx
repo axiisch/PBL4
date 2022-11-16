@@ -5,9 +5,29 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import { useContext } from 'react';
+
+import { db } from '../firebase';
+import {
+    collection,
+    query,
+    orderBy,
+    startAt,
+    endAt,
+    getDocs,
+    setDoc,
+    doc,
+    updateDoc,
+    serverTimestamp,
+    getDoc,
+} from 'firebase/firestore';
+
+import { AuthContext } from '../context/AuthContext';
 
 function Login() {
     // Toggle password visibility
+
+    const { currentUser } = useContext(AuthContext);
     const [visible, setVisibility] = useState(false);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
@@ -19,10 +39,15 @@ function Login() {
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
+            // console.log(currentUser);
+            // if (currentUser) {
+
+            // }
             navigate('/');
         } catch (err) {
             setError(true);
         }
+        // console.log(currentUser.uid);
     };
 
     return (

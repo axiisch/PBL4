@@ -17,6 +17,9 @@ import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { v4 as uuid } from 'uuid';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+
 function Search() {
     // Hold search content
     const [username, setUsername] = useState('');
@@ -43,6 +46,10 @@ function Search() {
                 console.log(users);
                 setReal(users);
             } catch (err) {}
+        } else {
+            setReal([]);
+            setUser(null);
+            setUsername('');
         }
 
         // try {
@@ -94,13 +101,18 @@ function Search() {
 
     return (
         <div className="flex flex-col w-full h-auto">
-            <div className="w-full py-4 px-6  bg-white">
+            <div className="w-full py-4 px-6 relative bg-white">
                 <input
                     onKeyDown={handleKey}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="bg-black  w-full h-9 text-white  rounded-3xl px-4 py-2  focus: outline-none"
+                    className="bg-black  w-full h-9 text-white  rounded-3xl pl-4 pr-12 py-2  focus: outline-none"
                     type="text"
                     placeholder="Search people"
+                />
+                <FontAwesomeIcon
+                    onClick={handleSearch}
+                    className="absolute cursor-pointer p-2 text-xl text-white top-1/2 transform -translate-y-1/2 right-8  rounded-full z-50"
+                    icon={faMagnifyingGlass}
                 />
             </div>
             {real.map((temp) => (
@@ -111,7 +123,7 @@ function Search() {
                             className="cursor-pointer  px-6 py-3 flex items-center gap-3 hover:bg-gray-300"
                         >
                             <div>
-                                <img className="w-14 h-14 bg-cover rounded-full" src={temp.photoURL} alt="error" />
+                                <img className="w-14 h-14 bg-cover rounded-full" src={temp.photoURL} alt="" />
                             </div>
                             <div className="grow flex flex-col">
                                 <label className="cursor-pointer max-w-[270px] whitespace-nowrap overflow-hidden font-semibold">

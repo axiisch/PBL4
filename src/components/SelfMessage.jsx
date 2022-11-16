@@ -1,63 +1,38 @@
-import { useEffect, useRef, useState } from 'react';
-import { arrayRemove, arrayUnion, updateDoc, FieldValue } from 'firebase/firestore';
+import { useEffect, useRef } from 'react';
+import { arrayRemove, arrayUnion, updateDoc } from 'firebase/firestore';
 import { ChatContext } from '../context/ChatContext';
 import { useContext } from 'react';
 import { db } from '../firebase';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { AuthContext } from '../context/AuthContext';
+import { doc } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function SelfMessage({ message }) {
     const ref = useRef();
-    const [messages, setMessages] = useState([]);
+    // const [messages, setMessages] = useState([]);
 
     const { data } = useContext(ChatContext);
 
-    const handleClick = () => {
-        // let messageArray = [];
-        const unsub = onSnapshot(doc(db, 'messages', data.chatId), (docSnap) => {
-            docSnap.exists() && setMessages(docSnap.data().messages);
-            console.log(docSnap.data().messages);
-            console.log(message.id);
-            // messageArray = docSnap.data().messages;
-
-            // let foundIndex = messageArray.findIndex((x) => x.id === message.id);
-            // messageArray[foundIndex] = {
-            //     id: message.id,
-            //     date: message.date,
-            //     text: message.text,
-            //     img: message.img,
-            //     senderId: message.senderId,
-            //     deleted: true,
-            // };
-            // console.log(foundIndex);
-            // console.log(messageArray);
-
-            const tempRef = doc(db, 'messages', data.chatId);
-            let tempMessage = message;
-            updateDoc(tempRef, {
-                messages: arrayRemove(message),
-            });
-            updateDoc(tempRef, {
-                messages: arrayUnion({
-                    id: tempMessage.id,
-                    date: tempMessage.date,
-                    text: tempMessage.text,
-                    img: tempMessage.img,
-                    senderId: tempMessage.senderId,
-                    deleted: true,
-                }),
-            });
+    const handleClick = async () => {
+        const tempRef = doc(db, 'messages', data.chatId);
+        let tempMessage = message;
+        await updateDoc(tempRef, {
+            messages: arrayRemove(message),
         });
-
-        return () => {
-            unsub();
-        };
+        await updateDoc(tempRef, {
+            messages: arrayUnion({
+                id: tempMessage.id,
+                date: tempMessage.date,
+                text: tempMessage.text,
+                img: tempMessage.img,
+                senderId: tempMessage.senderId,
+                deleted: true,
+            }),
+        });
     };
 
     useEffect(() => {
-        ref.current?.scrollIntoView({ behavior: 'smooth' });
+        ref.current?.scrollIntoView();
     }, [message]);
 
     return message.deleted ? (
@@ -85,7 +60,7 @@ function SelfMessage({ message }) {
                     )}
                 </span>
                 {message.img ? (
-                    <img className="bg-cover max-w-xs rounded-xl " src={message.img} alt="loading" />
+                    <img className="bg-cover max-w-xs rounded-xl " src={message.img} alt="" />
                 ) : (
                     <span></span>
                 )}

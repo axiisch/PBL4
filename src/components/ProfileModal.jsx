@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose, faCamera, faEdit, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faClose, faCamera, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { db, storage } from '../firebase';
-import { doc, arrayUnion, Timestamp, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 
 import { updateProfile } from 'firebase/auth';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
@@ -100,7 +100,7 @@ function ProfileModal() {
                         >
                             <FontAwesomeIcon icon={faCamera} />
                         </label>
-                        <img className="w-20 h-20 rounded-full" src={img} alt="loading" />
+                        <img className="w-20 h-20 rounded-full" src={img} alt="" />
                         <input onChange={handleImgChanges} id="upload" type="file" className="hidden" />
                     </div>
                     <div className="mb-4 w-full mt-4">

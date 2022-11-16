@@ -1,23 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import Input from '../components/Input';
 import Chatbox from '../components/Chatbox';
 import { useContext } from 'react';
 import { ChatContext } from '../context/ChatContext';
 import { useEffect, useState } from 'react';
-import {
-    collection,
-    query,
-    orderBy,
-    startAt,
-    endAt,
-    getDocs,
-    setDoc,
-    doc,
-    updateDoc,
-    serverTimestamp,
-    getDoc,
-} from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 import { db } from '../firebase';
 function Chat() {
@@ -41,7 +27,7 @@ function Chat() {
             <div className="w-full py-4  px-6 h-[68px] bg-white ">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-6">
-                        <img className="w-9 h-9 bg-cover rounded-full" src={user?.photoURL} alt="loading" />
+                        <img className="w-9 h-9 bg-cover rounded-full" src={user?.photoURL} alt="" />
                         <label className="font-semibold">{user?.displayName}</label>
                     </div>
                     {/* <button className="btn-icon">

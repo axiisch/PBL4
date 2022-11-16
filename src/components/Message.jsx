@@ -1,26 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import Input from '../components/Input';
-import Chatbox from '../components/Chatbox';
 import { useContext } from 'react';
 import { ChatContext } from '../context/ChatContext';
 import { useEffect, useState, useRef } from 'react';
-import {
-    collection,
-    query,
-    orderBy,
-    startAt,
-    endAt,
-    getDocs,
-    setDoc,
-    doc,
-    updateDoc,
-    serverTimestamp,
-    getDoc,
-} from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 import { db } from '../firebase';
-
 // import { useEffect } from 'react';
 
 function Message({ message }) {
@@ -29,7 +12,7 @@ function Message({ message }) {
     const ref = useRef();
 
     useEffect(() => {
-        ref.current?.scrollIntoView({ behavior: 'smooth' });
+        ref.current?.scrollIntoView();
     }, [message]);
 
     useEffect(() => {
@@ -46,12 +29,12 @@ function Message({ message }) {
     return message.deleted ? (
         <span></span>
     ) : (
-        <div ref={ref} className="flex flex-row ml-6 gap-6 mb-3 group">
+        <div ref={ref} className=" flex flex-row ml-6 gap-6 mb-3 group">
             <div className="flex items-start justify-center">
-                <img className="w-9 h-9 bg-cover rounded-full" src={user?.photoURL} alt="loading" />
+                <img className="w-9 h-9 bg-cover rounded-full" src={user?.photoURL} alt="" />
             </div>
             <div className="relative ">
-                <span className="text-white text-sm bg-black py-1 px-2 rounded-2xl absolute top-1/2 transform -translate-y-1/2 -right-32 hidden group-hover:block">
+                <span className="text-white text-sm  bg-black py-1 px-2 rounded-2xl absolute top-1/2 transform -translate-y-1/2 -right-32 hidden group-hover:block">
                     {message.date.toDate().toLocaleTimeString()}
                 </span>
                 {message.text !== '' ? (
@@ -63,7 +46,7 @@ function Message({ message }) {
                 )}
 
                 {message.img ? (
-                    <img className="bg-cover max-w-xs rounded-xl " src={message.img} alt="loading" />
+                    <img className="bg-cover max-w-xs rounded-xl " src={message.img} alt="" />
                 ) : (
                     <span></span>
                 )}

@@ -7,13 +7,31 @@ import { useContext, useState } from 'react';
 import { ModalContext } from '../context/ModalContext';
 import { ChatContext } from '../context/ChatContext';
 
+import { db } from '../firebase';
+import {
+    collection,
+    query,
+    orderBy,
+    startAt,
+    endAt,
+    getDocs,
+    setDoc,
+    doc,
+    updateDoc,
+    serverTimestamp,
+    getDoc,
+} from 'firebase/firestore';
+
 function Dashboard() {
     const { currentUser } = useContext(AuthContext);
     const { showModal, setShowModal } = useContext(ModalContext);
     const { dispatch } = useContext(ChatContext);
     const [expand, setExpand] = useState(false);
 
-    const handleSignOut = () => {
+    const handleSignOut = async () => {
+        await updateDoc(doc(db, 'users', currentUser.uid), {
+            online: false,
+        });
         dispatch({ type: 'CLEAR_USER' });
         signOut(auth);
     };
@@ -24,7 +42,7 @@ function Dashboard() {
         >
             <div className="flex item-center justify-center flex-col">
                 <div className="flex item-center justify-center">
-                    <img className="w-9 h-9 bg-cover rounded-full" src={currentUser.photoURL} alt="error" />
+                    <img className="w-9 h-9 bg-cover rounded-full" src={currentUser.photoURL} alt="" />
                 </div>
                 {expand ? (
                     <div className="flex mt-3 item-center justify-center text-white">{currentUser.displayName}</div>
