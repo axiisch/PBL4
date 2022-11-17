@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 function Home() {
     return (
-        <div className="flex w-screen h-screen overflow-x-hidden">
+        <div className="flex w-screen h-screen">
             <Dashboard />
             <Content />
         </div>

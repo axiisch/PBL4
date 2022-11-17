@@ -5,12 +5,20 @@ import { ChatContext } from '../context/ChatContext';
 import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis, faRightFromBracket, faLeftRight, faImage } from '@fortawesome/free-solid-svg-icons';
+import {
+    faEllipsis,
+    faRightFromBracket,
+    faLeftRight,
+    faImage,
+    faMagnifyingGlass,
+} from '@fortawesome/free-solid-svg-icons';
 import { db } from '../firebase';
 
 function Chat({ handleShow }) {
     const { data } = useContext(ChatContext);
     const [user, setUser] = useState(null);
+
+    const [showSearch, setShowSearch] = useState(false);
 
     useEffect(() => {
         setUser(null);
@@ -32,16 +40,25 @@ function Chat({ handleShow }) {
                         <img className="w-9 h-9 bg-cover rounded-full" src={user?.photoURL} alt="" />
                         <label className="font-semibold">{user?.displayName}</label>
                     </div>
-                    <button className="btn-icon">
-                        <FontAwesomeIcon
-                            onClick={handleShow}
-                            className="p-2 text-xl  text-black rounded-full hover:bg-black hover:text-white"
-                            icon={faImage}
-                        />
-                    </button>
+                    <div className="flex flex-row items-center justify-center gap-3">
+                        <button className="btn-icon">
+                            <FontAwesomeIcon
+                                onClick={() => setShowSearch(!showSearch)}
+                                className="p-2 text-xl  text-black rounded-full hover:bg-black hover:text-white"
+                                icon={faMagnifyingGlass}
+                            />
+                        </button>
+                        <button className="btn-icon">
+                            <FontAwesomeIcon
+                                onClick={handleShow}
+                                className="p-2 text-xl  text-black rounded-full hover:bg-black hover:text-white"
+                                icon={faImage}
+                            />
+                        </button>
+                    </div>
                 </div>
             </div>
-            <Chatbox />
+            <Chatbox showSearch={showSearch} />
             <Input />
         </div>
     );

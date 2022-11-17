@@ -6,10 +6,16 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 // import { useEffect } from 'react';
 
-function Message({ message }) {
+function Message({ search, message }) {
     const { data } = useContext(ChatContext);
     const [user, setUser] = useState(null);
     const ref = useRef();
+
+    useEffect(() => {
+        if (message.text.toLowerCase().includes(search.toLowerCase(), 0)) {
+            ref.current?.scrollIntoView();
+        }
+    }, [search]);
 
     useEffect(() => {
         ref.current?.scrollIntoView();
