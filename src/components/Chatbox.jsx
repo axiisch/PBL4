@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faRightFromBracket, faLeftRight } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 
+import ScrollToBottom from 'react-scroll-to-bottom';
 import { ChatContext } from '../context/ChatContext';
 import { useContext } from 'react';
 import { db } from '../firebase';
@@ -26,7 +27,7 @@ function Chatbox() {
     }, [data.chatId]);
 
     return (
-        <div className="bg-gray-200 py-2 shadow-[inset_0_0_30px_rgba(0,0,0,0.2)] h-full overflow-scroll overflow-x-hidden">
+        <ScrollToBottom className="bg-gray-200 py-2 shadow-[inset_0_0_30px_rgba(0,0,0,0.2)] h-full overflow-scroll overflow-x-hidden">
             {messages.map((m) =>
                 m.senderId !== currentUser.uid ? (
                     <Message message={m} key={m.id} />
@@ -34,7 +35,7 @@ function Chatbox() {
                     <SelfMessage message={m} key={m.id} />
                 ),
             )}
-        </div>
+        </ScrollToBottom>
     );
 }
 
