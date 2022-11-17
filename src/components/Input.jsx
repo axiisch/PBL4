@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage, faPaperPlane, faClose } from '@fortawesome/free-solid-svg-icons';
+import { faImage, faPaperPlane, faClose, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { ChatContext } from '../context/ChatContext';
@@ -92,7 +92,7 @@ function Input() {
                 <label htmlFor="upload" className="flex items-center cursor-pointer gap-2 text-sm capitalize">
                     <FontAwesomeIcon
                         className="p-2 text-xl  text-black rounded-full hover:bg-black hover:text-white"
-                        icon={faImage}
+                        icon={faCamera}
                     />
                 </label>
                 <input

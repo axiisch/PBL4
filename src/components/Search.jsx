@@ -116,7 +116,7 @@ function Search() {
                 />
             </div>
             {real.map((temp) => (
-                <div key={uuid()} className="grow bg-white">
+                <div key={uuid()} className="grow bg-gray-200">
                     {temp && (
                         <div
                             onClick={() => handleSelect(temp)}

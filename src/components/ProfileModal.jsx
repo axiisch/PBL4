@@ -12,20 +12,19 @@ import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
 
 // import { useNavigate } from 'react-router-dom';
-import { ModalContext } from '../context/ModalContext';
 
 // import { useEffect } from 'react';
 import { useState } from 'react';
 import { signOut } from 'firebase/auth';
 
-function ProfileModal() {
+function ProfileModal({ handleShowModal, showModal }) {
     const { currentUser } = useContext(AuthContext);
     const [edit, setEdit] = useState(false);
     const [sent, setSent] = useState(false);
     const [img, setImg] = useState(currentUser.photoURL);
     // const navigate = useNavigate();
 
-    const { showModal, setShowModal } = useContext(ModalContext);
+    // const { showModal, setShowModal } = useContext(ModalContext);
 
     const handleImgChanges = (e) => {
         setImg(URL.createObjectURL(e.target.files[0]));
@@ -83,79 +82,87 @@ function ProfileModal() {
 
     // const [open, setOpen] = useState(false);
     return (
-        <div className=" w-full h-full bg-black bg-opacity-80 flex justify-center items-center absolute top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 z-50 ">
-            <div className="w-96 bg-white shadow-2xl rounded-3xl">
-                <form onSubmit={handleSubmit} className="relative px-14 py-8 flex items-center flex-col">
-                    <span
-                        onClick={() => setShowModal(!showModal)}
-                        className="cursor-pointer absolute right-5 top-4 w-5 h-5 rounded-full hover:bg-black hover:text-white flex items-center justify-center"
-                    >
-                        <FontAwesomeIcon icon={faClose} />
-                    </span>
-                    <label className="uppercase font-bold text-2xl mb-4">User Information</label>
-                    <div onClick={handleImgChanges} className="relative">
-                        <label
-                            htmlFor="upload"
-                            className="text-2xl cursor-pointer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-0 hover:opacity-30 rounded-full hover:bg-black hover:text-white flex items-center justify-center"
+        showModal && (
+            <div className=" w-full h-full bg-black bg-opacity-80 flex justify-center items-center fixed top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 z-50 ">
+                <div className="w-96 bg-white shadow-2xl rounded-3xl">
+                    <form onSubmit={handleSubmit} className="relative px-14 py-8 flex items-center flex-col">
+                        <span
+                            onClick={handleShowModal}
+                            className="cursor-pointer absolute right-5 top-4 w-5 h-5 rounded-full hover:bg-black hover:text-white flex items-center justify-center"
                         >
-                            <FontAwesomeIcon icon={faCamera} />
-                        </label>
-                        <img className="w-20 h-20 rounded-full" src={img} alt="" />
-                        <input onChange={handleImgChanges} id="upload" type="file" className="hidden" />
-                    </div>
-                    <div className="mb-4 w-full mt-4">
-                        <label className="capitalize">display name</label>
-                        <div className="relative">
-                            <input
-                                className={`${
-                                    edit ? '' : 'pointer-events-none'
-                                } pr-2 w-full py-2 border-b-2 border-cyan-400  focus: outline-none focus:border-cyan-500`}
-                                type="text"
-                                defaultValue={currentUser.displayName}
-                            ></input>
-                            <FontAwesomeIcon
-                                onClick={() => setEdit(!edit)}
-                                icon={faEdit}
-                                className="absolute top-1/2 right-0 cursor-pointer transform -translate-y-1/2"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="w-full mb-4 ">
-                        <label className="capitalize">Email</label>
-                        <div className="relative">
-                            <input
-                                className="pointer-events-none pr-7 w-full py-2 border-b-2 border-cyan-400  focus: outline-none focus:border-cyan-500"
-                                type="email"
-                                defaultValue={currentUser.email}
-                            ></input>
-                            <span className="h absolute right-0 bottom-2"></span>
-                        </div>
-                    </div>
-
-                    <button
-                        onClick={handleChangePassword}
-                        className="font-semibold mt-4 py-3 w-full uppercase text-white rounded-3xl bg-black hover:bg-opacity-80"
-                    >
-                        Change password
-                        {/* <FontAwesomeIcon className="p-2 text-xl  rounded-full" icon={faLock} /> */}
-                    </button>
-
-                    <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl bg-black hover:bg-opacity-80">
-                        save changes
-                    </button>
-
-                    {sent && (
-                        <span className="text-sm text-center text-black capitalize">
-                            a link to change your password has been sent to your email
+                            <FontAwesomeIcon icon={faClose} />
                         </span>
-                    )}
-                    {sent && (
-                        <span className="text-sm text-center text-black capitalize">Logging out in 8 seconds...</span>
-                    )}
-                </form>
+                        <label className="uppercase font-bold text-2xl mb-4">User Information</label>
+                        <div onClick={handleImgChanges} className="relative">
+                            <label
+                                htmlFor="upload"
+                                className="text-2xl cursor-pointer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-0 hover:opacity-30 rounded-full hover:bg-black hover:text-white flex items-center justify-center"
+                            >
+                                <FontAwesomeIcon icon={faCamera} />
+                            </label>
+                            <img
+                                className="w-20 h-20 rounded-full"
+                                src={img == null ? currentUser.photoURL : img}
+                                alt=""
+                            />
+                            <input onChange={handleImgChanges} id="upload" type="file" className="hidden" />
+                        </div>
+                        <div className="mb-4 w-full mt-4">
+                            <label className="capitalize">display name</label>
+                            <div className="relative">
+                                <input
+                                    className={`${
+                                        edit ? '' : 'pointer-events-none'
+                                    } pr-2 w-full py-2 border-b-2 border-cyan-400  focus: outline-none focus:border-cyan-500`}
+                                    type="text"
+                                    defaultValue={currentUser.displayName}
+                                ></input>
+                                <FontAwesomeIcon
+                                    onClick={() => setEdit(!edit)}
+                                    icon={faEdit}
+                                    className="absolute top-1/2 right-0 cursor-pointer transform -translate-y-1/2"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="w-full mb-4 ">
+                            <label className="capitalize">Email</label>
+                            <div className="relative">
+                                <input
+                                    className="pointer-events-none pr-7 w-full py-2 border-b-2 border-cyan-400  focus: outline-none focus:border-cyan-500"
+                                    type="email"
+                                    defaultValue={currentUser.email}
+                                ></input>
+                                <span className="h absolute right-0 bottom-2"></span>
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={handleChangePassword}
+                            className="font-semibold mt-4 py-3 w-full uppercase text-white rounded-3xl bg-black hover:bg-opacity-80"
+                        >
+                            Change password
+                            {/* <FontAwesomeIcon className="p-2 text-xl  rounded-full" icon={faLock} /> */}
+                        </button>
+
+                        <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl bg-black hover:bg-opacity-80">
+                            save changes
+                        </button>
+
+                        {sent && (
+                            <span className="text-sm text-center text-black capitalize">
+                                a link to change your password has been sent to your email
+                            </span>
+                        )}
+                        {sent && (
+                            <span className="text-sm text-center text-black capitalize">
+                                Logging out in 8 seconds...
+                            </span>
+                        )}
+                    </form>
+                </div>
             </div>
-        </div>
+        )
     );
 }
 

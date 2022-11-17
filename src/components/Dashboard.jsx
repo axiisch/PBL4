@@ -4,8 +4,9 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { AuthContext } from '../context/AuthContext';
 import { useContext, useState } from 'react';
-import { ModalContext } from '../context/ModalContext';
 import { ChatContext } from '../context/ChatContext';
+
+import ProfileModal from '../components/ProfileModal';
 
 import { db } from '../firebase';
 import {
@@ -24,7 +25,7 @@ import {
 
 function Dashboard() {
     const { currentUser } = useContext(AuthContext);
-    const { showModal, setShowModal } = useContext(ModalContext);
+    const [showModal, setShowModal] = useState(false);
     const { dispatch } = useContext(ChatContext);
     const [expand, setExpand] = useState(false);
 
@@ -34,6 +35,10 @@ function Dashboard() {
         });
         dispatch({ type: 'CLEAR_USER' });
         signOut(auth);
+    };
+
+    const handleShowModal = () => {
+        setShowModal(!showModal);
     };
 
     return (
@@ -91,6 +96,7 @@ function Dashboard() {
                     {expand && <span>Sign Out</span>}
                 </div>
             </div>
+            <ProfileModal handleShowModal={handleShowModal} showModal={showModal} />
         </div>
     );
 }

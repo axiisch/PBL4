@@ -1,4 +1,7 @@
 import Message from './Message';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear, faRightFromBracket, faLeftRight } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
 
 import { ChatContext } from '../context/ChatContext';
 import { useContext } from 'react';
@@ -7,11 +10,9 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import SelfMessage from './SelfMessage';
-
 function Chatbox() {
     const [messages, setMessages] = useState([]);
     const { data } = useContext(ChatContext);
-
     const { currentUser } = useContext(AuthContext);
 
     useEffect(() => {

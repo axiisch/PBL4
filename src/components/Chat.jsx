@@ -4,9 +4,11 @@ import { useContext } from 'react';
 import { ChatContext } from '../context/ChatContext';
 import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsis, faRightFromBracket, faLeftRight, faImage } from '@fortawesome/free-solid-svg-icons';
 import { db } from '../firebase';
-function Chat() {
+
+function Chat({ handleShow }) {
     const { data } = useContext(ChatContext);
     const [user, setUser] = useState(null);
 
@@ -30,12 +32,13 @@ function Chat() {
                         <img className="w-9 h-9 bg-cover rounded-full" src={user?.photoURL} alt="" />
                         <label className="font-semibold">{user?.displayName}</label>
                     </div>
-                    {/* <button className="btn-icon">
+                    <button className="btn-icon">
                         <FontAwesomeIcon
-                            className="p-2 w-[36px] text-xl  text-white rounded-full hover:bg-slate-500"
-                            icon={faEllipsis}
+                            onClick={handleShow}
+                            className="p-2 text-xl  text-black rounded-full hover:bg-black hover:text-white"
+                            icon={faImage}
                         />
-                    </button> */}
+                    </button>
                 </div>
             </div>
             <Chatbox />
