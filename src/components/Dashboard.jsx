@@ -1,27 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faRightFromBracket, faLeftRight } from '@fortawesome/free-solid-svg-icons';
 import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
+import { auth } from '../firebase/firebase';
 import { AuthContext } from '../context/AuthContext';
 import { useContext, useState } from 'react';
 import { ChatContext } from '../context/ChatContext';
 
 import ProfileModal from '../components/ProfileModal';
 
-import { db } from '../firebase';
-import {
-    collection,
-    query,
-    orderBy,
-    startAt,
-    endAt,
-    getDocs,
-    setDoc,
-    doc,
-    updateDoc,
-    serverTimestamp,
-    getDoc,
-} from 'firebase/firestore';
+import { db } from '../firebase/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 
 function Dashboard() {
     const { currentUser } = useContext(AuthContext);

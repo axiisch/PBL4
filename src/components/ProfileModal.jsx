@@ -1,15 +1,18 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose, faCamera, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { db, storage } from '../firebase';
+import { db, storage } from '../firebase/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { updateProfile } from 'firebase/auth';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-
+import { updateUser } from '../firebase/services';
+import { CSSTransition } from 'react-transition-group';
 import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../firebase';
+import { auth } from '../firebase/firebase';
 
 // import { useNavigate } from 'react-router-dom';
 
@@ -18,9 +21,10 @@ import { useState } from 'react';
 import { signOut } from 'firebase/auth';
 
 function ProfileModal({ handleShowModal, showModal }) {
+    const nodeRef = useRef(null);
     const { currentUser } = useContext(AuthContext);
     const [edit, setEdit] = useState(false);
-    const [sent, setSent] = useState(false);
+
     const [img, setImg] = useState(currentUser.photoURL);
     // const navigate = useNavigate();
 
@@ -55,6 +59,7 @@ function ProfileModal({ handleShowModal, showModal }) {
                     });
                 });
             } catch (err) {}
+            // updateUser(currentUser, currentUser.uid, displayName, file);
         }
         if (file === undefined) {
             try {
@@ -71,20 +76,50 @@ function ProfileModal({ handleShowModal, showModal }) {
     const handleChangePassword = () => {
         sendPasswordResetEmail(auth, currentUser.email)
             .then(() => {
-                setSent(true);
-                // Need fixes : useEffect => rerender timer
+                toast.info('A link to reset your password has been sent to your email!', {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'light',
+                });
+                toast.info('Logging Out', {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'light',
+                });
                 setTimeout(() => {
                     signOut(auth);
-                }, 10000);
+                }, 5500);
             })
             .catch((err) => {});
     };
 
     // const [open, setOpen] = useState(false);
     return (
-        showModal && (
-            <div className=" w-full h-full bg-black bg-opacity-80 flex justify-center items-center fixed top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 z-50 ">
-                <div className="w-96 bg-white shadow-2xl rounded-3xl">
+        <CSSTransition in={showModal} timeout={200} nodeRef={nodeRef} classNames="modal" unmountOnExit>
+            <div className="w-full h-full bg-black bg-opacity-80 flex justify-center items-center fixed top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 z-50 ">
+                <ToastContainer
+                    position="top-right"
+                    autoClose={3500}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
+                <div ref={nodeRef} className="w-96 bg-white shadow-2xl rounded-3xl">
                     <form onSubmit={handleSubmit} className="relative px-14 py-8 flex items-center flex-col">
                         <span
                             onClick={handleShowModal}
@@ -148,21 +183,10 @@ function ProfileModal({ handleShowModal, showModal }) {
                         <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl bg-black hover:bg-opacity-80">
                             save changes
                         </button>
-
-                        {sent && (
-                            <span className="text-sm text-center text-black capitalize">
-                                a link to change your password has been sent to your email
-                            </span>
-                        )}
-                        {sent && (
-                            <span className="text-sm text-center text-black capitalize">
-                                Logging out in 8 seconds...
-                            </span>
-                        )}
                     </form>
                 </div>
             </div>
-        )
+        </CSSTransition>
     );
 }
 

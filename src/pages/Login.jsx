@@ -4,24 +4,11 @@ import { useState } from 'react';
 
 import { useNavigate, Link } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { auth } from '../firebase/firebase';
 import { useContext } from 'react';
 
-import { db } from '../firebase';
-import {
-    collection,
-    query,
-    orderBy,
-    startAt,
-    endAt,
-    getDocs,
-    setDoc,
-    doc,
-    updateDoc,
-    serverTimestamp,
-    getDoc,
-} from 'firebase/firestore';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from '../context/AuthContext';
 
 function Login() {
@@ -29,29 +16,69 @@ function Login() {
 
     const { currentUser } = useContext(AuthContext);
     const [visible, setVisibility] = useState(false);
-    const [error, setError] = useState(false);
+
     const navigate = useNavigate();
+
+    const toastPopUp = (customError) => {
+        toast.error(customError, {
+            position: 'top-right',
+            autoClose: 3500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const email = e.target[0].value;
         const password = e.target[1].value;
+        if (password === '' || email === '') {
+            toastPopUp('Please fill in all the input fields');
+        } else if (password.length < 6) {
+            toastPopUp('Password length must be more than 6 characters');
+        } else {
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                // console.log(currentUser);
+                // if (currentUser) {
+                // }
+                navigate('/');
+            } catch (err) {
+                toastPopUp('Incorrect email or password. Please try again');
 
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            // console.log(currentUser);
-            // if (currentUser) {
-
-            // }
-            navigate('/');
-        } catch (err) {
-            setError(true);
+                // toast.error('Invalid or missing input please check again!', {
+                //     position: 'top-right',
+                //     autoClose: 3500,
+                //     hideProgressBar: false,
+                //     closeOnClick: true,
+                //     pauseOnHover: true,
+                //     draggable: true,
+                //     progress: undefined,
+                //     theme: 'light',
+                // });
+            }
+            // console.log(currentUser.uid);
         }
-        // console.log(currentUser.uid);
     };
 
     return (
         <div className="bg-[url('./assets/img/bg1.jpg')] bg-cover w-screen h-screen flex items-center justify-center">
+            <ToastContainer
+                position="top-right"
+                autoClose={3500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <div className="w-96 bg-white shadow-2xl rounded-3xl">
                 <form onSubmit={handleSubmit} className="px-14 py-8 flex items-center flex-col">
                     <label className="uppercase font-bold text-2xl mb-4">login</label>
@@ -93,12 +120,6 @@ function Login() {
                     <span className="text-sm text-cyan-400 capitalize">
                         <Link to="/register">register</Link>
                     </span>
-
-                    {error && (
-                        <span className="text-red-600 text-sm mt-4 text-center">
-                            Missing or Invalid Info. Please try again
-                        </span>
-                    )}
                 </form>
             </div>
         </div>

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { db } from '../firebase';
+import { db } from '../firebase/firebase';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { ChatContext } from '../context/ChatContext';
 import { collection, query, getDocs, doc, onSnapshot } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
-
+// import { getAllUsers } from '../firebase/services';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -33,7 +33,8 @@ function Contacts() {
                 setReal(users);
                 console.log(real);
             } catch (err) {}
-
+            // let a = getAllUsers;
+            // console.log(a);
             const unsub = onSnapshot(doc(db, 'contacts', currentUser.uid), (doc) => {
                 setContacts(doc.data());
                 console.log(doc.data());
@@ -47,7 +48,7 @@ function Contacts() {
     }, [currentUser.uid]);
 
     return (
-        <div className="flex flex-col w-full h-full">
+        <div className="flex flex-col w-full h-full  overflow-y-hidden">
             <div className="grow bg-white overflow-scroll overflow-x-hidden">
                 {Object.entries(contacts)
                     ?.sort((a, b) => b[1].date - a[1].date)

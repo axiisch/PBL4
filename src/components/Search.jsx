@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { db } from '../firebase';
+import { db } from '../firebase/firebase';
 import {
     collection,
     query,
@@ -16,7 +16,7 @@ import {
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { v4 as uuid } from 'uuid';
-
+import { createContact } from '../firebase/services';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
@@ -24,13 +24,12 @@ function Search() {
     // Hold search content
     const [username, setUsername] = useState('');
     // Hold targeted user
-    const [user, setUser] = useState(null);
+    // const [user, setUser] = useState(null);
     const [real, setReal] = useState([]);
     const { currentUser } = useContext(AuthContext);
 
     const handleSearch = async () => {
         if (username !== '') {
-            setUser(null);
             const q = query(
                 collection(db, 'users'),
                 orderBy('displayName'),
@@ -46,21 +45,15 @@ function Search() {
                 console.log(users);
                 setReal(users);
             } catch (err) {}
+
+            // try {
+            //     console.log(getUsersWithUsername(username));
+            // } catch (err) {}
         } else {
             setReal([]);
-            setUser(null);
+
             setUsername('');
         }
-
-        // try {
-        //     if (username !== '') {
-        //         // Map users collection => Find username => Set target user
-        //         const querySnapshot = await getDocs(q);
-        //         querySnapshot.forEach((doc) => {
-        //             setUser(doc.data());
-        //         });
-        //     }
-        // } catch (err) {}
     };
 
     const handleKey = (e) => {
@@ -85,6 +78,8 @@ function Search() {
                     [combinedId + '.date']: serverTimestamp(),
                     [combinedId + '.latestMessage']: '',
                 });
+                // createContact(combinedId, currentUser.uid, user.uid);
+                // createContact(combinedId, user.uid, currentUser.uid);
 
                 await updateDoc(doc(db, 'contacts', user.uid), {
                     [combinedId + '.userRef']: currentUser.uid,
@@ -95,12 +90,12 @@ function Search() {
         } catch (err) {}
 
         // Clear search and targeted user
-        setUser(null);
+        // setUser(null);
         setUsername('');
     };
 
     return (
-        <div className="flex flex-col w-full h-auto">
+        <div className="flex flex-col w-full h-auto ">
             <div className="w-full py-4 px-6 relative bg-white">
                 <input
                     onKeyDown={handleKey}

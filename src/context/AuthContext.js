@@ -1,8 +1,8 @@
 import { createContext, useEffect, useState } from 'react';
-import { auth } from '../firebase';
+import { auth } from '../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-import { db } from '../firebase';
+import { db } from '../firebase/firebase';
 import {
     collection,
     query,

@@ -5,14 +5,8 @@ import { ChatContext } from '../context/ChatContext';
 import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faEllipsis,
-    faRightFromBracket,
-    faLeftRight,
-    faImage,
-    faMagnifyingGlass,
-} from '@fortawesome/free-solid-svg-icons';
-import { db } from '../firebase';
+import { faImage, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { db } from '../firebase/firebase';
 
 function Chat({ handleShow }) {
     const { data } = useContext(ChatContext);

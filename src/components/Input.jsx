@@ -1,12 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage, faPaperPlane, faClose, faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faClose, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { ChatContext } from '../context/ChatContext';
-import { db, storage } from '../firebase';
+import { storage } from '../firebase/firebase';
 import { doc, arrayUnion, Timestamp, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
+import { db } from '../firebase/firebase';
 import { uploadBytesResumable, getDownloadURL, ref } from 'firebase/storage';
+import { addMessage, updateContact } from '../firebase/services';
 
 function Input() {
     const [text, setText] = useState('');
@@ -53,6 +55,22 @@ function Input() {
                                     img: downloadURL,
                                 }),
                             });
+                            // addMessage(data.chatId, text, currentUser.uid, downloadURL);
+                            // updateContact(currentUser.uid, data.chatId, '[Photo]');
+                            // updateContact(data.user.userRef, data.chatId, '[Photo]');
+                            await updateDoc(doc(db, 'contacts', currentUser.uid), {
+                                [data.chatId + '.latestMessage']: {
+                                    text: '[Photo]',
+                                },
+                                [data.chatId + '.date']: serverTimestamp(),
+                            });
+
+                            await updateDoc(doc(db, 'contacts', data.user.userRef), {
+                                [data.chatId + '.latestMessage']: {
+                                    text: '[Photo]',
+                                },
+                                [data.chatId + '.date']: serverTimestamp(),
+                            });
                         });
                     },
                 );
@@ -66,6 +84,11 @@ function Input() {
                         img: null,
                     }),
                 });
+                // MessagesService.addMessage(uuid(), text, currentUser.uid);
+                // addMessage(data.chatId, text, currentUser.uid, null);
+                // updateContact(currentUser.uid, data.chatId, text);
+                // updateContact(data.user.userRef, data.chatId, text);
+
                 await updateDoc(doc(db, 'contacts', currentUser.uid), {
                     [data.chatId + '.latestMessage']: {
                         text,
