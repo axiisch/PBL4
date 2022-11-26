@@ -53,22 +53,20 @@ function Input() {
                                     senderId: currentUser.uid,
                                     date: Timestamp.now(),
                                     img: downloadURL,
+                                    hiddenTo: [],
+                                    deleted: false,
                                 }),
                             });
                             // addMessage(data.chatId, text, currentUser.uid, downloadURL);
                             // updateContact(currentUser.uid, data.chatId, '[Photo]');
                             // updateContact(data.user.userRef, data.chatId, '[Photo]');
                             await updateDoc(doc(db, 'contacts', currentUser.uid), {
-                                [data.chatId + '.latestMessage']: {
-                                    text: '[Photo]',
-                                },
+                                [data.chatId + '.latestMessage']: '[Photo]',
                                 [data.chatId + '.date']: serverTimestamp(),
                             });
 
                             await updateDoc(doc(db, 'contacts', data.user.userRef), {
-                                [data.chatId + '.latestMessage']: {
-                                    text: '[Photo]',
-                                },
+                                [data.chatId + '.latestMessage']: '[Photo]',
                                 [data.chatId + '.date']: serverTimestamp(),
                             });
                         });
@@ -82,6 +80,8 @@ function Input() {
                         senderId: currentUser.uid,
                         date: Timestamp.now(),
                         img: null,
+                        hiddenTo: [],
+                        deleted: false,
                     }),
                 });
                 // MessagesService.addMessage(uuid(), text, currentUser.uid);
@@ -90,16 +90,12 @@ function Input() {
                 // updateContact(data.user.userRef, data.chatId, text);
 
                 await updateDoc(doc(db, 'contacts', currentUser.uid), {
-                    [data.chatId + '.latestMessage']: {
-                        text,
-                    },
+                    [data.chatId + '.latestMessage']: text,
                     [data.chatId + '.date']: serverTimestamp(),
                 });
 
                 await updateDoc(doc(db, 'contacts', data.user.userRef), {
-                    [data.chatId + '.latestMessage']: {
-                        text,
-                    },
+                    [data.chatId + '.latestMessage']: text,
                     [data.chatId + '.date']: serverTimestamp(),
                 });
             }

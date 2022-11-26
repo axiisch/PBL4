@@ -74,7 +74,7 @@ function Contacts() {
                                             {user.displayName}
                                         </label>
                                         <p className="max-w-[250px] whitespace-nowrap overflow-hidden text-sm text-gray-600 ">
-                                            {contact[1].latestMessage?.text} &nbsp;
+                                            {contact[1].latestMessage} &nbsp;
                                         </p>
                                     </div>
                                 </div>

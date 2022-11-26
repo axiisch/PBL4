@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import { AuthContext } from '../context/AuthContext';
+
 import { arrayRemove, arrayUnion, updateDoc } from 'firebase/firestore';
 import { ChatContext } from '../context/ChatContext';
 import { useContext } from 'react';
@@ -13,6 +15,8 @@ import { deleteMessage } from '../firebase/services';
 
 function SelfMessage({ search, message }) {
     const ref = useRef();
+    const { currentUser } = useContext(AuthContext);
+
     const [showImg, setShowImg] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [selectedImg, setSelectedImg] = useState(null);
@@ -52,6 +56,7 @@ function SelfMessage({ search, message }) {
                 img: tempMessage.img,
                 senderId: tempMessage.senderId,
                 deleted: true,
+                hiddenTo: tempMessage.hiddenTo,
             }),
         });
         // deleteMessage(data.chatId, message);
@@ -62,7 +67,8 @@ function SelfMessage({ search, message }) {
     }, [message]);
 
     return (
-        !message.deleted && (
+        !message.deleted &&
+        !message.hiddenTo.includes(currentUser.uid) && (
             <div ref={ref} className="flex justify-start flex-row-reverse mr-6 group">
                 <div className="relative flex flex-col justify-start mb-3  ">
                     <div className=" absolute top-1/2 transform -translate-y-1/2 -left-32 items-center justify-center flex-row hidden group-hover:flex">

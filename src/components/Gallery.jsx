@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import { db } from '../firebase/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState, useRef } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 import ImageModal from '../components/ImageModal';
 
@@ -13,6 +14,8 @@ function Gallery({ show }) {
     const { data } = useContext(ChatContext);
     const [showModal, setShowModal] = useState(false);
     const [selectedImg, setSelectedImg] = useState(null);
+    const { currentUser } = useContext(AuthContext);
+
     const handleShowModal = () => {
         setShowModal(!showModal);
     };
@@ -42,6 +45,7 @@ function Gallery({ show }) {
                 <div class="grid grid-cols-3 max-h-[calc(100%-68px)] gap-2 mx-2 overflow-y-scroll text-center overflow-x-hidden">
                     {messages.map(
                         (message) =>
+                            !message.hiddenTo.includes(currentUser.uid) &&
                             !message.deleted &&
                             message.img != null && (
                                 <div
