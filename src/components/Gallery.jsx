@@ -49,15 +49,11 @@ function Gallery({ show }) {
                             !message.deleted &&
                             message.img != null && (
                                 <div
-                                    className="hover:opacity-90 drop-shadow-xl m-auto w-16 h-16 flex items-center justify-center bg-black  rounded-xl bg-opacity-60"
+                                    onClick={() => handleSelect(message.img)}
+                                    className="cursor-pointer hover:opacity-90 drop-shadow-xl m-auto w-20 h-20 flex items-center justify-center bg-gray-600  rounded-md bg-opacity-60"
                                     key={message.id}
                                 >
-                                    <img
-                                        onClick={() => handleSelect(message.img)}
-                                        className="rounded-xl cursor-pointer"
-                                        src={message.img}
-                                        alt=""
-                                    />
+                                    <img className="rounded-md " src={message.img} alt="" />
                                 </div>
                             ),
                     )}

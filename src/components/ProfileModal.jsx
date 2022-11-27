@@ -9,7 +9,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { updateProfile } from 'firebase/auth';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { updateUser } from '../firebase/services';
 import { CSSTransition } from 'react-transition-group';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
@@ -26,9 +25,6 @@ function ProfileModal({ handleShowModal, showModal }) {
     const [edit, setEdit] = useState(false);
 
     const [img, setImg] = useState(currentUser.photoURL);
-    // const navigate = useNavigate();
-
-    // const { showModal, setShowModal } = useContext(ModalContext);
 
     const handleImgChanges = (e) => {
         setImg(URL.createObjectURL(e.target.files[0]));
@@ -59,7 +55,6 @@ function ProfileModal({ handleShowModal, showModal }) {
                     });
                 });
             } catch (err) {}
-            // updateUser(currentUser, currentUser.uid, displayName, file);
         }
         if (file === undefined) {
             try {
@@ -72,7 +67,6 @@ function ProfileModal({ handleShowModal, showModal }) {
             } catch (err) {}
         }
     };
-    /////////////////////////////////////// !!!
     const handleChangePassword = () => {
         sendPasswordResetEmail(auth, currentUser.email)
             .then(() => {
@@ -103,7 +97,6 @@ function ProfileModal({ handleShowModal, showModal }) {
             .catch((err) => {});
     };
 
-    // const [open, setOpen] = useState(false);
     return (
         <CSSTransition in={showModal} timeout={200} nodeRef={nodeRef} classNames="modal" unmountOnExit>
             <div className="w-full h-full bg-black bg-opacity-80 flex justify-center items-center fixed top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 z-50 ">
@@ -177,7 +170,6 @@ function ProfileModal({ handleShowModal, showModal }) {
                             className="font-semibold mt-4 py-3 w-full uppercase text-white rounded-3xl bg-black hover:bg-opacity-80"
                         >
                             Change password
-                            {/* <FontAwesomeIcon className="p-2 text-xl  rounded-full" icon={faLock} /> */}
                         </button>
 
                         <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl bg-black hover:bg-opacity-80">

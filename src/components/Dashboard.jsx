@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear, faRightFromBracket, faLeftRight } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
 import { AuthContext } from '../context/AuthContext';
@@ -15,7 +15,7 @@ function Dashboard() {
     const { currentUser } = useContext(AuthContext);
     const [showModal, setShowModal] = useState(false);
     const { dispatch } = useContext(ChatContext);
-    const [expand, setExpand] = useState(false);
+    // const [expand, setExpand] = useState(false);
 
     const handleSignOut = async () => {
         await updateDoc(doc(db, 'users', currentUser.uid), {
@@ -30,58 +30,46 @@ function Dashboard() {
     };
 
     return (
-        <div
-            className={`${expand ? 'w-44' : 'w-15'} relative z-50 flex flex-col  justify-between bg-black pt-4 h-full `}
-        >
-            <div className="flex item-center justify-center flex-col">
-                <div className="flex item-center justify-center">
-                    <img className="w-9 h-9 bg-cover rounded-full" src={currentUser.photoURL} alt="" />
+        <div className="w-16 relative z-50 flex flex-col  justify-between bg-black pt-4 h-full">
+            <div className="relative flex item-center justify-center flex-col group">
+                <div className="flex item-center justify-center ">
+                    <img
+                        className="rounded-3xl hover:rounded-xl transition-all duration-150 ease-linear w-9 h-9 bg-cover "
+                        src={currentUser.photoURL}
+                        alt=""
+                    />
                 </div>
-                {expand ? (
-                    <div className="flex mt-3 item-center justify-center text-white">{currentUser.displayName}</div>
-                ) : (
-                    <span></span>
-                )}
+                <span className="shadow-md group-hover:scale-100 scale-0 rounded-md transition-all duration-150 origin-left absolute left-16 w-auto p-2 min-w-max m-2 bg-gray-900 text-white">
+                    {currentUser.displayName}
+                </span>
             </div>
 
-            <div className="flex flex-col justify-center items-center">
-                <div
-                    onClick={() => setExpand(!expand)}
-                    className={`
-                ${!expand ? '' : ' hover:bg-slate-900'}
-                 py-3 flex flex-row cursor-pointer items-center w-full
-                 text-white  hover:text-black hover:bg-white `}
-                >
-                    <button className="mx-2 btn-icon">
-                        <FontAwesomeIcon className="p-2 text-xl  rounded-full" icon={faLeftRight} />
-                    </button>
-                    {expand && <span>Collapse</span>}
-                </div>
-
+            <div className="flex flex-col justify-center items-center mb-4 gap-4">
                 <div
                     onClick={() => setShowModal(!showModal)}
-                    className={`
-                ${!expand ? '' : ' hover:bg-slate-900'}
-                 py-3 flex flex-row  cursor-pointer items-center w-full
-                 text-white  hover:text-black hover:bg-white`}
+                    className="
+                  flex flex-row  cursor-pointer justify-center items-center w-full
+                 text-white relative group"
                 >
-                    <button className="mx-2 btn-icon">
-                        <FontAwesomeIcon className="p-2 text-xl rounded-full  " icon={faGear} />
+                    <button className="bg-gray-800 rounded-3xl hover:rounded-xl transition-all duration-150 ease-linear mx-2 w-9 h-9 flex items-center justify-center">
+                        <FontAwesomeIcon className="p-2 text-xl " icon={faGear} />
                     </button>
-                    {expand && <span>Settings</span>}
+                    <span className="group-hover:scale-100 scale-0 shadow-md rounded-md transition-all duration-150 origin-left absolute left-16 w-auto p-2 min-w-max m-2 bg-gray-900 text-white">
+                        Profile
+                    </span>
                 </div>
                 <div
                     onClick={handleSignOut}
-                    className={`
-                ${!expand ? '' : ' hover:bg-slate-900'}
-                 py-3 flex flex-row  cursor-pointer items-center w-full
-                 text-white  hover:text-black hover:bg-white
-                 `}
+                    className=" flex flex-row justify-center  cursor-pointer items-center w-full
+                 text-white relative group
+                 "
                 >
-                    <button className="mx-2 btn-icon">
-                        <FontAwesomeIcon className="p-2 text-xl  rounded-full" icon={faRightFromBracket} />
+                    <button className="bg-gray-800 rounded-3xl hover:rounded-xl transition-all duration-150 ease-linear mx-2 w-9 h-9 flex items-center justify-center">
+                        <FontAwesomeIcon className="p-2 text-md " icon={faRightFromBracket} />
                     </button>
-                    {expand && <span>Sign Out</span>}
+                    <span className="group-hover:scale-100 scale-0 shadow-md rounded-md transition-all duration-150 origin-left absolute left-16 w-auto p-2 min-w-max m-2 bg-gray-900 text-white">
+                        Sign Out
+                    </span>
                 </div>
             </div>
             <ProfileModal handleShowModal={handleShowModal} showModal={showModal} />

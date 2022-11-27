@@ -1,8 +1,5 @@
 import Message from './Message';
 import React from 'react';
-import { arrayRemove, arrayUnion, updateDoc } from 'firebase/firestore';
-import { serverTimestamp } from 'firebase/firestore';
-import { FieldValue } from 'firebase/firestore';
 import { CSSTransition } from 'react-transition-group';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { ChatContext } from '../context/ChatContext';
@@ -12,7 +9,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import SelfMessage from './SelfMessage';
-function Chatbox({ showSearch, triggerDeletion }) {
+function Chatbox({ showSearch }) {
     const [messages, setMessages] = useState([]);
     const { data } = useContext(ChatContext);
     const { currentUser } = useContext(AuthContext);
@@ -27,56 +24,6 @@ function Chatbox({ showSearch, triggerDeletion }) {
             unSub();
         };
     }, [data.chatId]);
-    useEffect(() => {
-        handleDeleteChat();
-    }, [triggerDeletion]);
-    const handleDeleteChat = async () => {
-        messages.map(async (message) => {
-            let tempRef = doc(db, 'messages', data.chatId);
-            let tempMessage = message;
-            console.log(tempMessage.img);
-            // tempImg = "";
-            // tempMessage === null ? tempImg = "" : tempMessage = tempMessage
-            // let arr = [];
-            // arr = tempMessage.hiddenTo;
-            // arr.append(currentUser.uid);
-            // console.log(arr);
-            await updateDoc(tempRef, {
-                messages: arrayRemove(message),
-            });
-            await updateDoc(tempRef, {
-                messages: arrayUnion({
-                    date: tempMessage.date,
-                    hiddenTo: [...tempMessage.hiddenTo, currentUser.uid],
-                    id: tempMessage.id,
-                    img: tempMessage.img,
-                    text: tempMessage.text,
-                    senderId: tempMessage.senderId,
-                    deleted: tempMessage.deleted,
-                }),
-            });
-        });
-        await updateDoc(doc(db, 'contacts', currentUser.uid), {
-            [data.chatId + '.latestMessage']: '',
-            [data.chatId + '.date']: serverTimestamp(),
-        });
-        // });
-        // });
-        // let tempMessage = message;
-        // await updateDoc(tempRef, {
-        //     messages: arrayRemove(message),
-        // });
-        // await updateDoc(tempRef, {
-        //     messages: arrayUnion({
-        //         id: tempMessage.id,
-        //         date: tempMessage.date,
-        //         text: tempMessage.text,
-        //         img: tempMessage.img,
-        //         senderId: tempMessage.senderId,
-        //         deleted: true,
-        //     }),
-        // });
-    };
 
     return (
         <React.Fragment>

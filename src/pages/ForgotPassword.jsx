@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { sendPasswordResetEmail } from 'firebase/auth';
@@ -8,9 +7,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function ForgotPassword() {
-    const [sent, setSent] = useState(false);
-    const [error, setError] = useState('');
-
     const toastPopUp = (customError) => {
         toast.error(customError, {
             position: 'top-right',
@@ -25,7 +21,6 @@ function ForgotPassword() {
     };
 
     const handleSubmit = (e) => {
-        setError(false);
         e.preventDefault();
         console.log(e.target[0].value.length);
         if (e.target[0].value.length === 0) {
@@ -33,7 +28,6 @@ function ForgotPassword() {
         } else {
             sendPasswordResetEmail(auth, e.target[0].value)
                 .then(() => {
-                    setSent(true);
                     toast.info('A link to reset your password has been sent to your email!', {
                         position: 'top-right',
                         autoClose: 5000,
@@ -75,19 +69,12 @@ function ForgotPassword() {
                             type="email"
                             placeholder="Type in your email"
                         ></input>
-                        {/* <span className="text-sm mt-1 block h-4 text-red-600">error</span> */}
                     </div>
-
-                    {/* {error === '' ? <span>&nbsp;</span> : <span className="text text-red-500 w-full">{error}</span>} */}
 
                     <button className="font-semibold mb-6 mt-4 py-3 w-full uppercase text-white rounded-3xl  bg-black hover:bg-opacity-80">
                         send
                     </button>
-                    {/* {sent && (
-                        <span className="text-sm text-center text-black capitalize mb-4">
-                            link sent! check your inbox and spam
-                        </span>
-                    )} */}
+
                     <label className="capitalize text-sm">Return to login</label>
                     <span className="text-sm text-cyan-400 capitalize">
                         <Link to="/login">Login</Link>

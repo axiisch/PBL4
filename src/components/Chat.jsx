@@ -3,30 +3,74 @@ import Chatbox from '../components/Chatbox';
 import { useContext } from 'react';
 import { ChatContext } from '../context/ChatContext';
 import { useEffect, useState, useRef } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { getDoc } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faMagnifyingGlass, faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { db } from '../firebase/firebase';
 import { CSSTransition } from 'react-transition-group';
+import { arrayRemove, arrayUnion, updateDoc } from 'firebase/firestore';
+import { AuthContext } from '../context/AuthContext';
+import { serverTimestamp } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 function Chat({ handleShow }) {
+    const { currentUser } = useContext(AuthContext);
+    const [messages, setMessages] = useState([]);
+
     const { data } = useContext(ChatContext);
     const [user, setUser] = useState(null);
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const nodeRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
-    const [triggerDeletion, setTriggerDeletion] = useState(false);
     useEffect(() => {
         setUser(null);
         const getInfo = async () => {
             const docRef = doc(db, 'users', data.user.userRef);
             const docSnap = await getDoc(docRef);
             setUser(docSnap.data());
-            console.log(docSnap.data());
+            // console.log(docSnap.data());
         };
         data.user.userRef && getInfo();
     }, [data.user.userRef]);
+
+    useEffect(() => {
+        const unSub = onSnapshot(doc(db, 'messages', data.chatId), (doc) => {
+            doc.exists() && setMessages(doc.data().messages);
+        });
+
+        return () => {
+            unSub();
+        };
+    }, [data.chatId]);
+
+    const handleDeleteChat = async () => {
+        console.log('triggered');
+        messages.map(async (message) => {
+            let tempRef = doc(db, 'messages', data.chatId);
+            let tempMessage = message;
+            console.log(tempMessage.img);
+
+            await updateDoc(tempRef, {
+                messages: arrayRemove(message),
+            });
+            await updateDoc(tempRef, {
+                messages: arrayUnion({
+                    date: tempMessage.date,
+                    hiddenTo: [...tempMessage.hiddenTo, currentUser.uid],
+                    id: tempMessage.id,
+                    img: tempMessage.img,
+                    text: tempMessage.text,
+                    senderId: tempMessage.senderId,
+                    deleted: tempMessage.deleted,
+                }),
+            });
+        });
+        await updateDoc(doc(db, 'contacts', currentUser.uid), {
+            [data.chatId + '.latestMessage']: '',
+            [data.chatId + '.date']: serverTimestamp(),
+        });
+    };
 
     return (
         <div className="flex flex-col grow">
@@ -55,23 +99,20 @@ function Chat({ handleShow }) {
                         </button>
                         <div className="relative">
                             <button
+                                onClick={() => setToggleDropdown(!toggleDropdown)}
                                 type="button"
                                 data-dropdown-toggle="dropdown"
                                 className=" btn-icon text-xl  text-black rounded-full hover:bg-black hover:text-white"
                             >
-                                <FontAwesomeIcon
-                                    onClick={() => setToggleDropdown(!toggleDropdown)}
-                                    className=""
-                                    icon={faEllipsis}
-                                />
+                                <FontAwesomeIcon className="" icon={faEllipsis} />
                             </button>
                             {toggleDropdown && (
-                                <div class="absolute right-0 top-12 z-40 w-44 bg-white rounded divide-y divide-gray-100 shadow-xl dark:bg-gray-700">
+                                <div class="absolute right-0 top-12 z-40 w-44  rounded divide-y divide-gray-100 shadow-xl bg-black hover:bg-gray-700">
                                     <ul class="z-40 py-1 text-sm text-gray-700 dark:text-gray-200">
                                         <li>
                                             <div
                                                 onClick={() => setShowModal(!showModal)}
-                                                class="cursor-pointer block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                class="cursor-pointer block py-2 px-4 hover:bg-gray-800 dark:hover:bg-gray-900 dark:hover:text-white"
                                             >
                                                 Delete Conversation
                                             </div>
@@ -91,7 +132,7 @@ function Chat({ handleShow }) {
                                     <button
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            setTriggerDeletion(!triggerDeletion);
+                                            handleDeleteChat();
                                             setToggleDropdown(false);
                                             setShowModal(false);
                                         }}
@@ -116,7 +157,7 @@ function Chat({ handleShow }) {
                 </CSSTransition>
             </div>
 
-            <Chatbox showSearch={showSearch} triggerDeletion={triggerDeletion} />
+            <Chatbox showSearch={showSearch} />
             <Input />
         </div>
     );

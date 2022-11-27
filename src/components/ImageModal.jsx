@@ -1,34 +1,13 @@
-import { useContext, useRef } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose, faCamera, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { db, storage } from '../firebase/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { updateProfile } from 'firebase/auth';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { updateUser } from '../firebase/services';
 import { CSSTransition } from 'react-transition-group';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../firebase/firebase';
-
-// import { useNavigate } from 'react-router-dom';
-
-// import { useEffect } from 'react';
-import { useState } from 'react';
-import { signOut } from 'firebase/auth';
 
 function ImageModal({ handleShowModal, showModal, selectedImg }) {
     const nodeRef = useRef(null);
-    const { currentUser } = useContext(AuthContext);
-    const [edit, setEdit] = useState(false);
-
-    const [img, setImg] = useState(currentUser.photoURL);
-    // const navigate = useNavigate();
-
-    // const { showModal, setShowModal } = useContext(ModalContext);
 
     return (
         <CSSTransition in={showModal} timeout={200} nodeRef={nodeRef} classNames="modal" unmountOnExit>

@@ -16,15 +16,13 @@ import {
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { v4 as uuid } from 'uuid';
-import { createContact } from '../firebase/services';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 function Search() {
     // Hold search content
     const [username, setUsername] = useState('');
-    // Hold targeted user
-    // const [user, setUser] = useState(null);
+
     const [real, setReal] = useState([]);
     const { currentUser } = useContext(AuthContext);
 
@@ -45,13 +43,8 @@ function Search() {
                 console.log(users);
                 setReal(users);
             } catch (err) {}
-
-            // try {
-            //     console.log(getUsersWithUsername(username));
-            // } catch (err) {}
         } else {
             setReal([]);
-
             setUsername('');
         }
     };
@@ -96,7 +89,7 @@ function Search() {
 
     return (
         <div className="flex flex-col w-full h-auto ">
-            <div className="w-full py-4 px-6 relative bg-white">
+            <div className=" w-full py-4 px-6 relative bg-white">
                 <input
                     onKeyDown={handleKey}
                     onChange={(e) => setUsername(e.target.value)}
@@ -115,7 +108,7 @@ function Search() {
                     {temp && (
                         <div
                             onClick={() => handleSelect(temp)}
-                            className="cursor-pointer  px-6 py-3 flex items-center gap-3 hover:bg-gray-300"
+                            className="m-2 rounded-xl cursor-pointer  px-6 py-3 flex items-center gap-3 hover:bg-gray-300"
                         >
                             <div>
                                 <img className="w-14 h-14 bg-cover rounded-full" src={temp.photoURL} alt="" />

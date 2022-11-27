@@ -5,16 +5,11 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
-import { useContext } from 'react';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { AuthContext } from '../context/AuthContext';
 
 function Login() {
-    // Toggle password visibility
-
-    const { currentUser } = useContext(AuthContext);
     const [visible, setVisibility] = useState(false);
 
     const navigate = useNavigate();
@@ -44,22 +39,9 @@ function Login() {
             try {
                 await signInWithEmailAndPassword(auth, email, password);
                 // console.log(currentUser);
-                // if (currentUser) {
-                // }
                 navigate('/');
             } catch (err) {
                 toastPopUp('Incorrect email or password. Please try again');
-
-                // toast.error('Invalid or missing input please check again!', {
-                //     position: 'top-right',
-                //     autoClose: 3500,
-                //     hideProgressBar: false,
-                //     closeOnClick: true,
-                //     pauseOnHover: true,
-                //     draggable: true,
-                //     progress: undefined,
-                //     theme: 'light',
-                // });
             }
             // console.log(currentUser.uid);
         }
@@ -89,7 +71,6 @@ function Login() {
                             type="email"
                             placeholder="Type in your email"
                         ></input>
-                        {/* <span className="text-sm mt-1 block h-4 text-red-600">error</span> */}
                     </div>
 
                     <div className="w-full mb-4 ">
@@ -104,14 +85,11 @@ function Login() {
                                 <FontAwesomeIcon icon={visible ? faEyeSlash : faEye} />
                             </span>
                         </div>
-
-                        {/* <span className="text-sm mt-1 block h-4 text-red-600">error</span> */}
                     </div>
 
                     <label className="text-cyan-400 text-sm capitalize w-full flex justify-end">
                         <Link to="/forgotpassword">forgot password</Link>
                     </label>
-                    {/* bg-gradient-to-r from-blue-500 to-pink-500  hover:from-pink-400 hover:to-blue-400 */}
                     <button className="font-semibold my-6 py-3 w-full uppercase text-white rounded-3xl  bg-black hover:bg-opacity-80">
                         login
                     </button>
