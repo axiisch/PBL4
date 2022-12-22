@@ -26,7 +26,7 @@ function ImageModal({ handleShowModal, showModal, selectedImg }) {
                 />
                 <div className="w-full h-full bg-black bg-opacity-80 flex justify-center items-center fixed top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 z-50">
                     <div ref={nodeRef} className="relative">
-                        <img src={selectedImg} alt="" className="max-h-96 rounded-xl" />
+                        <img src={selectedImg} alt="" className="max-h-96 max-w-[250px] rounded-xl" />
                         <span
                             onClick={() => handleShowModal()}
                             className="cursor-pointer absolute right-5  text-white top-4 w-5 h-5 rounded-full hover:bg-white bg-opacity-10 hover:text-gray-400 flex items-center justify-center"

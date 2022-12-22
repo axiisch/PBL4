@@ -112,7 +112,7 @@ function ProfileModal({ handleShowModal, showModal }) {
                     pauseOnHover
                     theme="light"
                 />
-                <div ref={nodeRef} className="w-96 bg-white shadow-2xl rounded-3xl">
+                <div className="h-screen lg:h-auto w-screen lg:w-96 bg-white shadow-2xl lg:rounded-3xl flex items-center justify-center lg:none">
                     <form onSubmit={handleSubmit} className="relative px-14 py-8 flex items-center flex-col">
                         <span
                             onClick={handleShowModal}

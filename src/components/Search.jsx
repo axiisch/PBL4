@@ -88,12 +88,12 @@ function Search() {
     };
 
     return (
-        <div className="flex flex-col w-full h-auto ">
+        <div className="flex flex-col w-[full] h-auto ">
             <div className=" w-full py-4 px-6 relative bg-white">
                 <input
                     onKeyDown={handleKey}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="bg-black  w-full h-9 text-white  rounded-3xl pl-4 pr-12 py-2  focus: outline-none"
+                    className="bg-black  w-[280px] lg:w-full h-9 text-white  rounded-3xl pl-4 pr-12 py-2  focus: outline-none"
                     type="text"
                     placeholder="Search people"
                 />

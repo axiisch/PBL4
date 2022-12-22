@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faRightFromBracket, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
 import { AuthContext } from '../context/AuthContext';
 import { useContext, useState } from 'react';
 import { ChatContext } from '../context/ChatContext';
-
+import { ResponsiveContext } from '../context/ResponsiveContext';
 import ProfileModal from '../components/ProfileModal';
 
 import { db } from '../firebase/firebase';
@@ -16,6 +16,7 @@ function Dashboard() {
     const [showModal, setShowModal] = useState(false);
     const { dispatch } = useContext(ChatContext);
     // const [expand, setExpand] = useState(false);
+    const { responsive, setResponsive } = useContext(ResponsiveContext);
 
     const handleSignOut = async () => {
         await updateDoc(doc(db, 'users', currentUser.uid), {
@@ -45,6 +46,19 @@ function Dashboard() {
             </div>
 
             <div className="flex flex-col justify-center items-center mb-4 gap-4">
+                <div
+                    onClick={() => setResponsive(!responsive)}
+                    className="lg:hidden flex flex-row justify-center  cursor-pointer items-center w-full
+                 text-white relative group
+                 "
+                >
+                    <button className="bg-gray-800 rounded-3xl hover:rounded-xl transition-all duration-150 ease-linear mx-2 w-9 h-9 flex items-center justify-center">
+                        <FontAwesomeIcon className="p-2 text-md " icon={faMessage} />
+                    </button>
+                    <span className="group-hover:scale-100 scale-0 shadow-md rounded-md transition-all duration-150 origin-left absolute left-16 w-auto p-2 min-w-max m-2 bg-gray-900 text-white">
+                        Contacts
+                    </span>
+                </div>
                 <div
                     onClick={() => setShowModal(!showModal)}
                     className="

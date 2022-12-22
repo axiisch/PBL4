@@ -44,7 +44,7 @@ function Contacts() {
     }, [currentUser.uid]);
 
     return (
-        <div className="flex flex-col w-full h-full  overflow-y-hidden">
+        <div className="flex flex-col w-screen h-full  overflow-y-hidden lg:w-full">
             <div className="grow bg-white overflow-scroll overflow-x-hidden">
                 {Object.entries(contacts)
                     ?.sort((a, b) => b[1].date - a[1].date)
@@ -74,7 +74,7 @@ function Contacts() {
                                             <label className="cursor-pointer max-w-[250px] whitespace-nowrap overflow-hidden font-semibold">
                                                 {user.displayName}
                                             </label>
-                                            <p className="max-w-[250px] whitespace-nowrap overflow-hidden text-sm text-gray-600 ">
+                                            <p className="max-w-[200px] lg:max-w-[250px] whitespace-nowrap overflow-x-hidden text-sm text-gray-600 ">
                                                 {contact[1].latestMessage} &nbsp;
                                             </p>
                                         </div>

@@ -38,7 +38,7 @@ function Chatbox({ showSearch }) {
                 />
             </CSSTransition>
 
-            <ScrollToBottom className="bg-gray-200 py-2 shadow-[inset_0_0_30px_rgba(0,0,0,0.2)] h-full overflow-scroll overflow-x-hidden">
+            <ScrollToBottom className="bg-gray-200 py-2 shadow-[inset_0_0_30px_rgba(0,0,0,0.2)] h-full overflow-scroll overflow-x-hidden ">
                 {messages.map((m) =>
                     m.senderId !== currentUser.uid ? (
                         <Message search={search} message={m} key={m.id} />

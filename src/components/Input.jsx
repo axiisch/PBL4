@@ -99,7 +99,7 @@ function Input() {
     };
 
     return (
-        <div className="w-full h-[68px] flex items-center justify-center bg-white shadow-2xl -z-0">
+        <div className="w-[320px] lg:w-full h-[68px] flex items-center justify-center bg-white shadow-2xl -z-0">
             <div className=" relative flex items-center justify-center w-full px-6">
                 <label htmlFor="upload" className="flex items-center cursor-pointer gap-2 text-sm capitalize">
                     <FontAwesomeIcon

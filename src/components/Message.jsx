@@ -68,7 +68,7 @@ function Message({ search, message }) {
                     {message.img && (
                         <img
                             onClick={() => handleSelect(message.img)}
-                            className="bg-cover max-w-xs rounded-xl hover:opacity-90 cursor-pointer "
+                            className="bg-cover max-w-[200px] lg:max-w-xs rounded-xl hover:opacity-90 cursor-pointer "
                             src={message.img}
                             alt=""
                         />

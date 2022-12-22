@@ -61,7 +61,7 @@ function Login() {
                 pauseOnHover
                 theme="light"
             />
-            <div className="w-96 bg-white shadow-2xl rounded-3xl">
+            <div className="h-screen lg:h-auto w-screen lg:w-96 bg-white shadow-2xl lg:rounded-3xl flex items-center justify-center lg:none">
                 <form onSubmit={handleSubmit} className="px-14 py-8 flex items-center flex-col">
                     <label className="uppercase font-bold text-2xl mb-4">login</label>
                     <div className="mb-4 w-full">

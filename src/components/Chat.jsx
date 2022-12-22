@@ -13,7 +13,10 @@ import { AuthContext } from '../context/AuthContext';
 import { serverTimestamp } from 'firebase/firestore';
 import { doc, onSnapshot } from 'firebase/firestore';
 
+import { ResponsiveContext } from '../context/ResponsiveContext';
+
 function Chat({ handleShow }) {
+    const { responsive, setResponsive } = useContext(ResponsiveContext);
     const { currentUser } = useContext(AuthContext);
     const [messages, setMessages] = useState([]);
 
@@ -24,6 +27,7 @@ function Chat({ handleShow }) {
     const [showModal, setShowModal] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
     useEffect(() => {
+        setResponsive(true);
         setUser(null);
         const getInfo = async () => {
             const docRef = doc(db, 'users', data.user.userRef);
@@ -73,7 +77,11 @@ function Chat({ handleShow }) {
     };
 
     return (
-        <div className="flex flex-col grow">
+        <div
+            className={`${
+                responsive ? 'fixed w-screen h-screen z-40 lg:relative lg:w-auto lg:h-auto lg:z-0' : ''
+            } flex flex-col grow `}
+        >
             {/* HEADER */}
 
             <div className="w-full py-4  px-6 h-[68px] bg-white ">
@@ -82,7 +90,7 @@ function Chat({ handleShow }) {
                         <img className="w-9 h-9 bg-cover rounded-full" src={user?.photoURL} alt="" />
                         <label className="font-semibold">{user?.displayName}</label>
                     </div>
-                    <div className="flex flex-row items-center justify-center gap-3">
+                    <div className="flex flex-row items-center justify-center gap-0 pr-10 lg:pr-0 lg:gap-3">
                         <button className="btn-icon">
                             <FontAwesomeIcon
                                 onClick={() => setShowSearch(!showSearch)}
